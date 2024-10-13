@@ -3,7 +3,6 @@ import './app.css';
 import './style/mainpage.css';
 
 import logo from './assets/images/logo-universal.png';
-import {Greet} from '../wailsjs/go/main/App';
 
 
 

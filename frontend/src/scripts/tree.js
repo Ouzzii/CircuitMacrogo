@@ -1,4 +1,4 @@
-import { AskDirectory, GetDirectory, IsFile } from '../../wailsjs/go/main/App';
+import { AskDirectory, GetDirectory, IsFile } from '../../wailsjs/go/backend/App';
 
 
 
