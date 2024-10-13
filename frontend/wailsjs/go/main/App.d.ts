@@ -6,3 +6,5 @@ export function AskDirectory():Promise<string>;
 export function GetDirectory(arg1:string):Promise<Array<string>>;
 
 export function Greet(arg1:string):Promise<string>;
+
+export function IsFile(arg1:string):Promise<boolean>;

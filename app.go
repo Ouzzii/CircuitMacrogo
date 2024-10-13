@@ -62,3 +62,17 @@ func (a *App) GetDirectory(path string) []string {
 
 	return files
 }
+func (a *App) IsFile(path string) bool {
+	fi, err := os.Stat(path)
+	if err != nil {
+		panic(err)
+	}
+	switch mode := fi.Mode(); {
+	case mode.IsDir():
+		// do directory stuff
+		return false
+	case mode.IsRegular():
+		return true
+	}
+	return false
+}

@@ -1,19 +1,9 @@
 import './style.css';
 import './app.css';
+import './style/mainpage.css';
 
 import logo from './assets/images/logo-universal.png';
 import {Greet} from '../wailsjs/go/main/App';
-import { AskDirectory } from '../wailsjs/go/main/App';
-
-
-document.querySelector("button").addEventListener("click", function(){
-    AskDirectory().then(function(result){
-        const workspaceName = result.split("\\")[result.split("\\").length-1]
-        document.querySelector(".workspace").innerHTML = workspaceName
-    })
-
-    
-})
 
 
 

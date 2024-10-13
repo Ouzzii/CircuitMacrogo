@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./src/style/mainpage.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>    
+        
     <title>Document</title>
 </head>
 <body>
@@ -14,7 +15,7 @@
 
         </div>
         <div class="filesfolders">
-            <div class="askdirectory"><button>Bir Klasor Secin</button></div>
+            <div class="askdirectory"><button id="pickFolder">Bir Klasor Secin</button></div>
         </div>
         <div class="settings">
             
@@ -44,7 +45,9 @@
     </div>
 
 </div>
+
     <script src="./src/main.js" type="module"></script>
+    <script src="./src/scripts/tree.js" type="module"></script>
     
 </body>
 </html>

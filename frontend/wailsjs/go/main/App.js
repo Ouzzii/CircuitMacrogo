@@ -13,3 +13,7 @@ export function GetDirectory(arg1) {
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
+
+export function IsFile(arg1) {
+  return window['go']['main']['App']['IsFile'](arg1);
+}
