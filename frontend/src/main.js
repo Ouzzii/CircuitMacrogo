@@ -1,8 +1,7 @@
 import './style.css';
 import './app.css';
 import './style/mainpage.css';
-
-import logo from './assets/images/logo-universal.png';
+import './style/tree.css';
 
 
 

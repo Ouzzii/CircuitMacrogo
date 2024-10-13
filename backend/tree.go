@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/ncruces/zenity"
 )
@@ -35,7 +36,7 @@ func (a *App) AskDirectory() string {
 		log.Fatal(err)
 	}
 	fmt.Println(a.GetDirectory(dir))
-	return dir
+	return strings.ReplaceAll(dir, "\\", "/")
 }
 
 func (a *App) GetDirectory(path string) []string {
@@ -47,7 +48,7 @@ func (a *App) GetDirectory(path string) []string {
 			return err
 		}
 		// Dosya veya klasörün yolunu slice'a ekle
-		files = append(files, path)
+		files = append(files, strings.ReplaceAll(path, "\\", "/"))
 		return nil
 	})
 
