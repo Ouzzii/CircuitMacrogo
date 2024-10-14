@@ -18,7 +18,6 @@ func ReadConf() Conf {
 	if err := json.Unmarshal(plan, &data); err != nil {
 		log.Printf("Veriyi çözümlerken hata oluştu: %v", err)
 	}
-	fmt.Println(data)
 	return data
 }
 func (c *Conf) WriteConf() {
