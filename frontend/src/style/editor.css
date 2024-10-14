@@ -1,0 +1,24 @@
+.editortabs{
+    display: flex;
+}
+
+.filetab{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    background-color: #f1f1f1;
+}
+
+.filetab:hover{
+    background-color: #ddd;
+}
+
+.filetab a{
+    color: black;
+    user-select: none;
+    padding: 0px 10px;
+}
+.filetab#active{
+    background-color: #ccc;
+}
