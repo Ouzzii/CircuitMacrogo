@@ -6,6 +6,14 @@ export function AskDirectory() {
   return window['go']['backend']['App']['AskDirectory']();
 }
 
+export function CheckWorkspace() {
+  return window['go']['backend']['App']['CheckWorkspace']();
+}
+
+export function CloseConfWorkspace() {
+  return window['go']['backend']['App']['CloseConfWorkspace']();
+}
+
 export function GetDirectory(arg1) {
   return window['go']['backend']['App']['GetDirectory'](arg1);
 }

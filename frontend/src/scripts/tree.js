@@ -1,24 +1,36 @@
-import { AskDirectory, GetDirectory, IsFile } from '../../wailsjs/go/backend/App';
+import { AskDirectory, GetDirectory, IsFile, CheckWorkspace, CloseConfWorkspace } from '../../wailsjs/go/backend/App';
 
 
-
-$("body").on("click", "#pickFolder", function(){
-    AskDirectory().then(function(result){
-        let workspaceName = result.split("\\")[result.split("\\").length-1]
-        workspaceName = workspaceName.split("/")[workspaceName.split("/").length-1]
-
-        $(".workspace").html(workspaceName)
-        $(".filesfolders").attr("dir", result)
-        GetDirectory(result).then(function(files){
-            files.forEach(function(item){
-                replaceFiles(item, result)
-            })
-        })
-        $(".askdirectory").remove() 
+function checkInit(){
+    CheckWorkspace().then(function(workspace){
+        console.log(workspace)
+        if (workspace != ""){
+            loadWorkspace(workspace)
+        }
 
     })
+}
+checkInit()
+$("body").on("click", "#pickFolder", function(){
+            AskDirectory().then(function(result){
+                loadWorkspace(result)
+            })
 })
 
+
+function loadWorkspace(result){
+    let workspaceName = result.split("\\")[result.split("\\").length-1]
+    workspaceName = workspaceName.split("/")[workspaceName.split("/").length-1]
+    $(".workspace .workspaceName").html(workspaceName)
+    $(".filesfolders").attr("dir", result)
+    GetDirectory(result).then(function(files){
+        files.forEach(function(item){
+            replaceFiles(item, result)
+        })
+    })
+    $(".askdirectory").css('display', 'none') 
+    ToggleWorkspace()
+}
 
 function replaceFiles(file, rootDir){
     IsFile(file).then(function(filetype){
@@ -48,7 +60,7 @@ function createDirectory(dirName , parentDir, rootDir){
         console.log(dirName, parentDir, rootDir)
         var directory = jQuery('<div>',{
             dir: dirName,
-            class: 'directory'
+            class: 'directory Closed'
 
         })
         var directoryText = jQuery('<a>',{
@@ -73,5 +85,40 @@ function createDirectory(dirName , parentDir, rootDir){
 $('body').on('click', '.filesfolders a', function(){
     const dirName = $(this).attr('dir')
     $(`div[dir='${dirName}']`).toggleClass('Closed')
-    $(this).toggleClass('Uparrow')
+    $(this).toggleClass('Downarrow')
 })
+
+
+
+
+
+function ToggleWorkspace(){
+    if ($('.workspace').css('visibility') == 'visible'){
+        $('.workspace').css('visibility', 'hidden');
+    }else{
+        $('.workspace').css('visibility', 'visible');
+    }
+
+}
+
+
+$('body').on('click', '.closeWorkspace', CloseWorkspace)
+
+function CloseWorkspace(){
+    $('.workspaceName').html('')
+    $('.filesfolders').removeAttr('dir');
+
+    $('.filesfolders div,.filesfolders a').each(function(item){
+        if ($(this).attr('class') != 'askdirectory'){
+            $(this).remove()
+        }
+    })
+
+    ToggleWorkspace()
+    $(".askdirectory").css('display', 'flex')
+    CloseConfWorkspace()
+}
+
+
+
+

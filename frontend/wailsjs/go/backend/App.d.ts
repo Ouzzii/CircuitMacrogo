@@ -3,6 +3,10 @@
 
 export function AskDirectory():Promise<string>;
 
+export function CheckWorkspace():Promise<string>;
+
+export function CloseConfWorkspace():Promise<void>;
+
 export function GetDirectory(arg1:string):Promise<Array<string>>;
 
 export function IsFile(arg1:string):Promise<boolean>;

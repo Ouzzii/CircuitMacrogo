@@ -28,6 +28,7 @@ func (a *App) Startup(ctx context.Context) {
 }
 
 func (a *App) AskDirectory() string {
+	a.CheckWorkspace()
 	dir, err := zenity.SelectFile(
 		zenity.Filename(``),
 		zenity.Directory(),
@@ -35,11 +36,14 @@ func (a *App) AskDirectory() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(a.GetDirectory(dir))
+	conf := ReadConf()
+	conf.Workspace = dir
+	conf.WriteConf()
 	return strings.ReplaceAll(dir, "\\", "/")
 }
 
 func (a *App) GetDirectory(path string) []string {
+
 	var files []string
 	root := path // Klasörün yolunu buraya gir
 
@@ -71,4 +75,14 @@ func (a *App) IsFile(path string) bool {
 		return true
 	}
 	return false
+}
+
+func (a *App) CheckWorkspace() string {
+	conf := ReadConf()
+	return conf.Workspace
+}
+func (a *App) CloseConfWorkspace() {
+	conf := ReadConf()
+	conf.Workspace = ""
+	conf.WriteConf()
 }
