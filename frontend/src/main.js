@@ -2,6 +2,7 @@ import './style.css';
 import './app.css';
 import './style/mainpage.css';
 import './style/tree.css';
+import './style/editor.css';
 
 
 
