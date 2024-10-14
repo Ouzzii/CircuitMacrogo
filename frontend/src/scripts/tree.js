@@ -42,7 +42,8 @@ function replaceFiles(file, rootDir){
     }else{
 
         var directory = jQuery('<div>',{
-            dir: file
+            dir: file,
+            class: 'file',
         })
         directory.css('padding-left', '10px')
         directory.text(file.split('/')[file.split('/').length-1])
@@ -120,5 +121,31 @@ function CloseWorkspace(){
 }
 
 
+$('body').on('click','.file', function(){
+    createTab($(this).attr('dir'))
+})
+$('body').on('click', '.filetab', function(){
+    $('.filetab#active').removeAttr('id')
+    $(this).attr('id', 'active')
+})
 
 
+function createTab(path){
+    //filename = 
+    
+    //console.log(path.split(path.split("/")[path.split("/").length-1])[0]+path.split("/")[path.split("/").length-1])
+    
+
+
+
+    var editorTab = jQuery('<div>', {
+        dir: path,
+        class: 'filetab',
+        
+    })
+    var editorTitle = jQuery('<a>', {
+        text: path.split('/')[path.split('/').length-1]
+    })
+    editorTab.append(editorTitle)
+    $('.editortabs').append(editorTab)
+}
