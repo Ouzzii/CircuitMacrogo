@@ -62,7 +62,7 @@
   }
   
   .scrollable-div::-webkit-scrollbar {
-    height: 0.2rem; /* Yatay kaydırma çubuğu yüksekliği */
+    height: var(--scrollbar-height); /* Yatay kaydırma çubuğu yüksekliği */
   }
   
   .scrollable-div::-webkit-scrollbar-track {
