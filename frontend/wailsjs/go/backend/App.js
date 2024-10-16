@@ -14,6 +14,10 @@ export function CloseConfWorkspace() {
   return window['go']['backend']['App']['CloseConfWorkspace']();
 }
 
+export function GetContent(arg1) {
+  return window['go']['backend']['App']['GetContent'](arg1);
+}
+
 export function GetDirectory(arg1) {
   return window['go']['backend']['App']['GetDirectory'](arg1);
 }

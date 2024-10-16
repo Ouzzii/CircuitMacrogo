@@ -7,6 +7,8 @@ export function CheckWorkspace():Promise<string>;
 
 export function CloseConfWorkspace():Promise<void>;
 
+export function GetContent(arg1:string):Promise<string>;
+
 export function GetDirectory(arg1:string):Promise<Array<string>>;
 
 export function IsFile(arg1:string):Promise<boolean>;
