@@ -22,3 +22,11 @@
 .filetab#active{
     background-color: #ccc;
 }
+
+
+.editTextArea{
+    display: none;
+}
+.editTextArea#active{
+    display: block !important;
+}
