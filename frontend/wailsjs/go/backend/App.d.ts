@@ -11,4 +11,8 @@ export function GetContent(arg1:string):Promise<string>;
 
 export function GetDirectory(arg1:string):Promise<Array<string>>;
 
+export function GetPDF(arg1:string):Promise<string>;
+
 export function IsFile(arg1:string):Promise<boolean>;
+
+export function SaveContent(arg1:string,arg2:string):Promise<boolean>;

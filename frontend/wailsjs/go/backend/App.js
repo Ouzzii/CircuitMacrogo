@@ -22,6 +22,14 @@ export function GetDirectory(arg1) {
   return window['go']['backend']['App']['GetDirectory'](arg1);
 }
 
+export function GetPDF(arg1) {
+  return window['go']['backend']['App']['GetPDF'](arg1);
+}
+
 export function IsFile(arg1) {
   return window['go']['backend']['App']['IsFile'](arg1);
+}
+
+export function SaveContent(arg1, arg2) {
+  return window['go']['backend']['App']['SaveContent'](arg1, arg2);
 }
