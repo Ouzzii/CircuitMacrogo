@@ -78,4 +78,7 @@
     );
     border-radius: 10px;
   }
-  
+
+  .closeWorkspace{
+    cursor: pointer;
+  }
