@@ -1,0 +1,40 @@
+.notification {
+    color: black;
+    width: 300px;
+    margin-bottom: 10px;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.notification.success {
+    background-color: #c6f6d5;
+    border: 2px solid #38a169;
+}
+
+.notification.error {
+    background-color: #fed7d7;
+    border: 2px solid #e53e3e;
+}
+
+.notification.info {
+    background-color: #bee3f8;
+    border: 2px solid #3182ce;
+}
+
+.notification-title {
+    font-weight: bold;
+}
+
+.fade {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.fade.show {
+    opacity: 1;
+}
