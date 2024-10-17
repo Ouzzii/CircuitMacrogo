@@ -3,6 +3,8 @@ import './app.css';
 import './style/mainpage.css';
 import './style/tree.css';
 import './style/editor.css';
+import './style/preview.css';
+import './style/notification.css';
 
 
 
