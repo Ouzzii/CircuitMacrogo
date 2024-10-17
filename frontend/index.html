@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>    
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.5.141/pdf.min.js"></script>
     <title>CircuitMacrogo</title>
 </head>
 <body>
@@ -51,14 +51,16 @@
         </div>
     </div>
     <div class="preview">
-        <div class="previewCanvas">
+        <div class="previewtabs">
 
+        </div>
+        <div class="previewCanvas">
         </div>
         <div class="previewSettings">
 
         </div>
     </div>
-
+    <div id="notifications" style="position: fixed; bottom: 20px; right: 20px;"></div>
 </div>
 
 
@@ -72,9 +74,12 @@
         });
       });
   </script>
+  
     <script src="./src/main.js" type="module"></script>
+    <script src="./src/scripts/notification.js" type="module"></script>
     <script src="./src/scripts/tree.js" type="module"></script>
     <script src="./src/scripts/editor.js" type="module"></script>
-    
+    <script src="./src/scripts/hotkeys.js" type="module"></script>
+    <script src="./src/scripts/preview.js" type="module"></script>
 </body>
 </html>
