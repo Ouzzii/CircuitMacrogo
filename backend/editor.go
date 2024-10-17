@@ -16,3 +16,12 @@ func (a *App) GetContent(path string) string {
 
 	return str
 }
+func (a *App) SaveContent(path, content string) bool {
+	data := []byte(content)
+	err := os.WriteFile(path, data, 0777)
+	if err != nil {
+		fmt.Printf("Error when %v file saving: %v", path, err)
+		return false
+	}
+	return true
+}
