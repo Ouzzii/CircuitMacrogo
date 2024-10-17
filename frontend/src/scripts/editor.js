@@ -1,7 +1,10 @@
 import { GetContent } from "../../wailsjs/go/backend/App"
 
 $('body').on('click','.file', function(){
-    createTab($(this).attr('dir'))
+    if (!$(this).text().endsWith('.pdf')){
+        createTab($(this).attr('dir'))
+    }
+    
     checkScrollbarHeight()
 })
 
@@ -19,7 +22,6 @@ function changeEditor(){
 
 
 function createTab(path){
-    console.log($(`.filetab[dir="${path}"]`))
     if ($(`.filetab[dir="${path}"]`).length != 0) return
     var editorTab = jQuery('<div>', {
         dir: path,
@@ -39,6 +41,25 @@ function createTab(path){
         text: 'Close'
     })
 
+    var Types = {
+        'latex': 'LaTeX',
+        'pdf': 'PDF'
+    }
+    var targetType = $('<select/>', {class: 'compileas'});
+    
+    for(var val in Types) {
+        $('<option/>', {value: val, text: Types[val]}).appendTo(targetType);
+    }
+
+    var compileFlag = {
+        'pgf': 'PGF'
+    }
+    var compileType = $('<select/>', {class: 'compilewith'});
+    for(var val in compileFlag) {
+        $('<option/>', {value: val, text: compileFlag[val]}).appendTo(compileType);
+    }
+
+    
     if ($('.filetab').length == 0) {
         editorTab.attr('id', 'active')
         editorTextArea.attr('id', 'active')
@@ -51,10 +72,11 @@ function createTab(path){
     editorTab.append(closeButton)
     $('.editortabs').append(editorTab)
     $('.editArea').append(editorTextArea)
-
+    $('.compile').append(targetType)
+    $('.compile').append(compileType)
 }
 
-$('body').on('click', '.closeButton', function(event){
+$('body').on('click', '.editortabs .closeButton', function(event){
     event.stopPropagation();
     closeTab($(this))
 })
@@ -63,21 +85,11 @@ function closeTab(button){
     var tab = button.parent()[0]
     var tabText = $(`textarea[dir="${$(tab).attr('dir')}"]`)
     if ($(tab).attr('id') == 'active'){
-    
-
-
-        //const nextTab = $('.editortabs .filetab').eq($('.editortabs div.filetab').toArray().indexOf(tab)+1)
-        //const prevTab = $('.editortabs .filetab').eq($('.editortabs div.filetab').toArray().indexOf(tab)-1)
         var currentIndex = $('.editortabs div.filetab').toArray().indexOf(tab);
 
-        // Sonraki tab'ı bul
         const nextTab = $('.editortabs .filetab').eq(currentIndex + 1);
-        // Önceki tab'ı bul
         const prevTab = $('.editortabs .filetab').eq(currentIndex - 1);
-
-
-        console.log(nextTab)
-        console.log(prevTab)
+        
         if (nextTab.length){
             nextTab.attr('id', 'active')
             $(`textarea[dir="${nextTab.attr('dir')}"]`).attr('id', 'active')
@@ -89,14 +101,8 @@ function closeTab(button){
             tab.remove()
             tabText.remove()
         }
-        console.log(nextTab.length)
-        console.log(prevTab.length)
-        
-        //console.log(nextTab.length)
-        
     }else{
         $(`textarea[dir="${$(tab).attr('dir')}"]`).remove()
-        console.log($(`textarea[dir="${$(tab).attr('dir')}"]`))
         $(tab).remove()
 
     }
@@ -106,7 +112,6 @@ function checkScrollbarHeight() {
     $('.editortabs .filetab').each(function(){
         w = w + $(this).width()
     })
-    console.log(w)
 
     if ($('.editortabs').width() < w ){
         $(':root').css('--scrollbar-height', '0.2rem');
