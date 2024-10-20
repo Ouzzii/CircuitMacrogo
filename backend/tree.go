@@ -43,7 +43,7 @@ func (a *App) AskDirectory() string {
 }
 
 func (a *App) GetDirectory(path string) []string {
-
+	Log("Info", "GetDirectory fonskiyonu çalıştı")
 	var files []string
 	root := path // Klasörün yolunu buraya gir
 
