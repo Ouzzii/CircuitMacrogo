@@ -16,7 +16,7 @@
 
 .Closed {
     height: 0px;
-    overflow: hidden; /* İçerik taşmasını önlemek için */
+    overflow: hidden;
 }
 .filesfolders{
     overflow: auto;
