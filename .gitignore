@@ -26,3 +26,4 @@ node_modules
 frontend/dist
 *.sum
 *.json
+*.log
