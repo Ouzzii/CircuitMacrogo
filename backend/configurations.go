@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
+	"time"
 )
 
 type Conf struct {
-	Workspace string `json:"workspace"`
+	Workspace     string            `json:"workspace"`
+	PdflatexPaths map[string]string `json:"pdflatex-paths"`
+	LastDistro    string            `json:"last-distro"`
 }
 
 func ReadConf() Conf {
@@ -31,4 +35,18 @@ func (c *Conf) WriteConf() {
 	if err != nil {
 		fmt.Println("Dosya yazma hatası:", err)
 	}
+}
+func (c *Conf) AddPdflatexPath(key, path string) {
+	//if c.PdflatexPaths == nil {
+	//	c.PdflatexPaths = make(map[string]string)
+	//}
+	c.PdflatexPaths[key] = path
+}
+
+func CheckInternet() bool {
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+	_, err := client.Get("http://www.google.com")
+	return err == nil
 }
