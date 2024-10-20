@@ -14,6 +14,10 @@ export function CloseConfWorkspace() {
   return window['go']['backend']['App']['CloseConfWorkspace']();
 }
 
+export function Detect_tex_distros() {
+  return window['go']['backend']['App']['Detect_tex_distros']();
+}
+
 export function GetContent(arg1) {
   return window['go']['backend']['App']['GetContent'](arg1);
 }
