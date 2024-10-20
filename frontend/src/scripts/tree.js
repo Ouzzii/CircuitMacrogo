@@ -1,7 +1,8 @@
-import { AskDirectory, GetDirectory, IsFile, CheckWorkspace, CloseConfWorkspace } from '../../wailsjs/go/backend/App';
+import { Detect_tex_distros,AskDirectory, GetDirectory, IsFile, CheckWorkspace, CloseConfWorkspace } from '../../wailsjs/go/backend/App';
 
 
 function checkInit(){
+
     CheckWorkspace().then(function(workspace){
         console.log(workspace)
         if (workspace != ""){
