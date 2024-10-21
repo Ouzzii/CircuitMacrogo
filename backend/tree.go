@@ -81,8 +81,7 @@ func (a *App) CheckWorkspace() string {
 	conf := ReadConf()
 	exist, err := exists(conf.Workspace)
 	if err != nil {
-		// Hata durumunu işle
-		fmt.Println("Error checking workspace:", err)
+		Log("Error", fmt.Sprint("Error checking workspace: %v", err))
 		return ""
 	}
 	if !exist {
