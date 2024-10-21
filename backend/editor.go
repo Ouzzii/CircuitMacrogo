@@ -8,8 +8,7 @@ import (
 func (a *App) GetContent(path string) string {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Println("Getting Content: ", path)
-		fmt.Println("Error getting file content:", err)
+		Log("Error", fmt.Sprintf("Error getting file content: %v", err))
 	}
 
 	str := string(b)
@@ -20,7 +19,7 @@ func (a *App) SaveContent(path, content string) bool {
 	data := []byte(content)
 	err := os.WriteFile(path, data, 0777)
 	if err != nil {
-		fmt.Printf("Error when %v file saving: %v", path, err)
+		Log("Error", fmt.Sprintf("Error when %v file saving: %v", path, err))
 		return false
 	}
 	return true
