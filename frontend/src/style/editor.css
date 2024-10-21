@@ -30,3 +30,36 @@
 .editTextArea#active{
     display: block !important;
 }
+
+.filetettings, .compile{
+    display: none;
+}
+.filesettings#active, .compile#active{
+    display: flex !important;
+}
+
+.fileOperations{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 50px;
+}
+.compile{
+    align-items: center;
+}
+.compileButton{
+    height: 30px;
+}
+.compilewith, .compileas{
+    height: 30px;
+    border: none;
+    border-radius: 0px;
+    background-color: transparent;
+    outline: none;
+    user-select: none;
+}
+.willcheck{
+    height: 30px;
+    width: 30px;
+    margin: 0px;
+}
+
