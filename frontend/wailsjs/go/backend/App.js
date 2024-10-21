@@ -6,12 +6,24 @@ export function AskDirectory() {
   return window['go']['backend']['App']['AskDirectory']();
 }
 
+export function Boxdims_is_installed() {
+  return window['go']['backend']['App']['Boxdims_is_installed']();
+}
+
 export function CheckWorkspace() {
   return window['go']['backend']['App']['CheckWorkspace']();
 }
 
+export function ChooseDistro(arg1) {
+  return window['go']['backend']['App']['ChooseDistro'](arg1);
+}
+
 export function CloseConfWorkspace() {
   return window['go']['backend']['App']['CloseConfWorkspace']();
+}
+
+export function Compile(arg1, arg2) {
+  return window['go']['backend']['App']['Compile'](arg1, arg2);
 }
 
 export function Detect_tex_distros() {
