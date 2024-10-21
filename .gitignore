@@ -27,3 +27,6 @@ frontend/dist
 *.sum
 *.json
 *.log
+*.aux
+*.pdf
+*.tex
