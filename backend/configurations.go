@@ -12,7 +12,7 @@ import (
 
 type Conf struct {
 	Workspace     string            `json:"workspace"`
-	PdflatexPaths map[string]string `json:"pdflatex-paths"`
+	PdflatexPaths map[string]string `json:"pdflatexPaths"`
 	LastDistro    string            `json:"last-distro"`
 }
 
@@ -25,15 +25,18 @@ func ReadConf() Conf {
 	return data
 }
 func (c *Conf) WriteConf() {
+	if c.PdflatexPaths == nil {
+		c.PdflatexPaths = make(map[string]string)
+	}
 	jsonData, err := json.MarshalIndent(c, "", "  ") // Güzel bir format için MarshalIndent kullanıyoruz
 	if err != nil {
-		fmt.Println("JSON formatına çevirme hatası:", err)
+		Log("Error", fmt.Sprintf("JSON formatına çevirme hatası: %v", err))
 	}
 
 	// JSON verisini bir dosyaya yaz
 	err = ioutil.WriteFile("configuration.json", jsonData, os.ModePerm)
 	if err != nil {
-		fmt.Println("Dosya yazma hatası:", err)
+		Log("Error", fmt.Sprintf("Dosya yazma hatası: %v", err))
 	}
 }
 func (c *Conf) AddPdflatexPath(key, path string) {
