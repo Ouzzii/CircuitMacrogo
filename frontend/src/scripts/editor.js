@@ -18,6 +18,10 @@ function changeEditor(){
     const activeTabPath = $('.filetab#active').attr('dir')
     $('.editTextArea#active').removeAttr('id')
     $(`.editTextArea[dir="${activeTabPath}"]`).attr('id', 'active')
+
+    $('#active.compile').removeAttr('id')
+    $(`.compile[dir="${activeTabPath}"]`).attr('id', 'active')
+
 }
 
 
@@ -58,22 +62,42 @@ function createTab(path){
     for(var val in compileFlag) {
         $('<option/>', {value: val, text: compileFlag[val]}).appendTo(compileType);
     }
+    var checkbox = $('<input/>', {
+        type: 'checkbox',
+        class: 'willcheck',
+        dir: path
+    })
+    var compileButton = $('<button/>', {
+        class: 'compileButton',
+        text: 'Derle'
+    })
 
+    const filesettings = $('<div/>', {class: 'filesettings', dir: path})
+    const compilediv = $('<div/>', {class: 'compile', dir: path})
     
     if ($('.filetab').length == 0) {
         editorTab.attr('id', 'active')
         editorTextArea.attr('id', 'active')
+        filesettings.attr('id', 'active')
+        compilediv.attr('id', 'active')
     }
     GetContent(path).then(function(content){
         editorTextArea.text(content)
     })
 
+
+
+
     editorTab.append(editorTitle)
     editorTab.append(closeButton)
     $('.editortabs').append(editorTab)
     $('.editArea').append(editorTextArea)
-    $('.compile').append(targetType)
-    $('.compile').append(compileType)
+    $('.fileOperations').append(filesettings)
+    $('.fileOperations').append(compilediv)
+    compilediv.append(targetType).append(compileType).append(checkbox).append(compileButton)
+    //$('.fileOperations .compile').append(compileType)
+    //$('.fileOperations .compile').append(checkbox)
+    //$('.fileOperations .compile').append(compileButton)
 }
 
 $('body').on('click', '.editortabs .closeButton', function(event){
@@ -82,8 +106,10 @@ $('body').on('click', '.editortabs .closeButton', function(event){
 })
 
 function closeTab(button){
-    var tab = button.parent()[0]
-    var tabText = $(`textarea[dir="${$(tab).attr('dir')}"]`)
+    const tab = button.parent()[0]
+    const tabText = $(`textarea[dir="${$(tab).attr('dir')}"]`)
+    const tabCompile = $(`.compile[dir="${$(tab).attr('dir')}"]`)
+    const tabSettings = $(`.filesettings[dir="${$(tab).attr('dir')}"]`)
     if ($(tab).attr('id') == 'active'){
         var currentIndex = $('.editortabs div.filetab').toArray().indexOf(tab);
 
@@ -95,15 +121,21 @@ function closeTab(button){
             $(`textarea[dir="${nextTab.attr('dir')}"]`).attr('id', 'active')
             tab.remove()
             tabText.remove()
+            tabCompile.remove()
+            tabSettings.remove()
         }else if (prevTab.length){
             prevTab.attr('id', 'active')
             $(`textarea[dir="${prevTab.attr('dir')}"]`).attr('id', 'active')
             tab.remove()
             tabText.remove()
+            tabCompile.remove()
+            tabSettings.remove()
         }
     }else{
         $(`textarea[dir="${$(tab).attr('dir')}"]`).remove()
         $(tab).remove()
+        tabCompile.remove()
+        tabSettings.remove()
 
     }
 }
