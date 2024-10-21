@@ -32,11 +32,10 @@ func UpdateEnv() {
 
 	err := os.Setenv("PATH", updatedPath)
 	if err != nil {
-		fmt.Println("PATH ayarlanamadı:", err)
+		Log("Error", fmt.Sprintf("PATH ayarlanamadı: %v", err))
 		return
 	}
-
-	fmt.Println("Güncellenmiş PATH:", os.Getenv("PATH"))
+	Log("Success", fmt.Sprintf("Güncellenmiş PATH: %v", os.Getenv("PATH")))
 }
 
 func InstallCM() {
