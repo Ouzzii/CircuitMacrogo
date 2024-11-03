@@ -18,7 +18,7 @@ func (a *App) Detect_tex_distros() Conf {
 		detectPdfCmd := exec.Command("sh", "-c", "find / -name miktex-pdflatex 2>&1 | grep -v 'Permission denied' | grep -v 'Invalid argument' | grep -v 'No such file or directory'")
 		output, err := detectPdfCmd.CombinedOutput()
 		if err != nil {
-			Log("Error", fmt.Sprintf("miktex - detect pdflatex komutunu başlatma hatası: %v", err))
+			LogWithDetails(fmt.Sprintf("Error - miktex - detect pdflatex komutunu başlatma hatası: %v", err))
 			return conf
 		}
 		conf = ReadConf()
@@ -30,7 +30,7 @@ func (a *App) Detect_tex_distros() Conf {
 
 		output, err = detectPdfCmd.CombinedOutput()
 		if err != nil {
-			Log("Error", fmt.Sprintf("texlive - detect pdflatex komutunu başlatma hatası: %v", err))
+			LogWithDetails(fmt.Sprintf("Error - texlive - detect pdflatex komutunu başlatma hatası: %v", err))
 			return conf
 		}
 
@@ -39,7 +39,7 @@ func (a *App) Detect_tex_distros() Conf {
 				pdflatexDistroCmd := exec.Command("sh", "-c", fmt.Sprintf("%v --version", pdflatexpath))
 				output, err = pdflatexDistroCmd.CombinedOutput()
 				if err != nil {
-					Log("Error", fmt.Sprintf("pdflatex versiyonu kontrol edilirken hata ile karşılaşıldı: %v\n", err))
+					LogWithDetails(fmt.Sprintf("Error - pdflatex versiyonu kontrol edilirken hata ile karşılaşıldı: %v\n", err))
 					return conf
 				}
 				if strings.Contains(string(output), "TeX Live") {
@@ -68,18 +68,18 @@ func (a *App) Boxdims_is_installed() Boxdims {
 					Unzip(miktexpath+".zip", filepath.Dir(miktexpath))
 					//update database
 					exec.Command("sh", "-c", fmt.Sprintf("%v --update-fndb", get_initexmf()))
-					Log("Info", "Miktex: boxdims.sty başarılı bir şekilde indirildi")
+					LogWithDetails("Success - Miktex: boxdims.sty başarılı bir şekilde indirildi")
 					boxdims.Miktex = "exist"
 				} else {
-					Log("Error", "Miktex: internet bağlantısı olmadığından boxdims.sty indirilemedi")
+					LogWithDetails("Error - Miktex: internet bağlantısı olmadığından boxdims.sty indirilemedi")
 					boxdims.Miktex = "not exist"
 				}
 			} else {
-				Log("Info", "Miktex: boxdims.sty zaten kurulu")
+				LogWithDetails("Info - Miktex: boxdims.sty zaten kurulu")
 				boxdims.Miktex = "exist"
 			}
 		} else {
-			Log("Warning", "miktex: cihazda miktex bulunmamaktadır")
+			LogWithDetails("Warning - miktex: cihazda miktex bulunmamaktadır")
 		}
 		if _, exists := conf.PdflatexPaths["texlive"]; exists {
 			texlivepathCmd := exec.Command("sh", "-c", `find / -wholename "*/texmf-dist/tex/latex" 2>&1 | grep -v "Permission denied" | grep -v "Invalid argument" | grep -v "No such file or directory"`)
@@ -102,23 +102,23 @@ func (a *App) Boxdims_is_installed() Boxdims {
 						result := strings.Trim(string(output), "\n")
 
 						if strings.HasSuffix(result, "successful") {
-							Log("Info", "Texlive için boxdims başarıyla indirildi")
+							LogWithDetails("Success - Texlive için boxdims başarıyla indirildi")
 							boxdims.Texlive = "exist"
 						} else {
-							Log("Error", fmt.Sprintf("Texlive için boxdims indirilirken hata ile karşılaşıldı: %v\n", result))
+							LogWithDetails(fmt.Sprintf("Error - Texlive için boxdims indirilirken hata ile karşılaşıldı: %v\n", result))
 						}
 					} else {
-						Log("Error", "texlive: internet bağlantısı olmadığından boxdims.sty indirilemedi")
+						LogWithDetails("Error - texlive: internet bağlantısı olmadığından boxdims.sty indirilemedi")
 					}
 				} else {
-					Log("Info", "texlive: boxdims.sty zaten kurulu")
+					LogWithDetails("Info - texlive: boxdims.sty zaten kurulu")
 					boxdims.Texlive = "exist"
 				}
 			} else {
-				Log("Error", "texlive: Dizin bulunamadı")
+				LogWithDetails("Error - texlive: Dizin bulunamadı")
 			}
 		} else {
-			Log("Warning", "texlive: cihazda texlive bulunmamaktadır")
+			LogWithDetails("Warning - texlive: cihazda texlive bulunmamaktadır")
 		}
 
 	} else if runtime.GOOS == "windows" {
@@ -145,7 +145,7 @@ func get_initexmf() string {
 		initexmf = strings.Trim(string(output), "\n")
 	}
 	if initexmf == "" {
-		Log("Error", "initexmf komutu bulunamadı")
+		LogWithDetails("Error - initexmf komutu bulunamadı")
 	}
 	return initexmf
 }

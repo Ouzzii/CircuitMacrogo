@@ -23,7 +23,7 @@ func tolatex(m4 string) (string, string) {
 	// dpic komutunun çıktısını dosyaya yönlendiriyoruz
 	output, err := os.Create(outputFile)
 	if err != nil {
-		Log("Error", fmt.Sprintf("Çıktı dosyasını oluşturma hatası: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - Çıktı dosyasını oluşturma hatası: %v", err))
 		return "", fmt.Sprintf("Çıktı dosyasını oluşturma hatası: %v", err)
 	}
 	defer output.Close()
@@ -31,26 +31,26 @@ func tolatex(m4 string) (string, string) {
 
 	// Her iki komutu çalıştırıyoruz
 	if err := m4Cmd.Start(); err != nil {
-		Log("Error", fmt.Sprintf("m4 komutunu başlatma hatası: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - m4 komutunu başlatma hatası: %v", err))
 		return "", fmt.Sprintf("m4 komutunu başlatma hatası: %v", err)
 	}
 
 	if err := dpicCmd.Start(); err != nil {
-		Log("Error", fmt.Sprintf("dpic komutunu başlatma hatası: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - dpic komutunu başlatma hatası: %v", err))
 		return "", fmt.Sprintf("dpic komutunu başlatma hatası: %v", err)
 	}
 
 	// Her iki komutun bitmesini bekliyoruz
 	if err := m4Cmd.Wait(); err != nil {
-		Log("Error", fmt.Sprintf("m4 komutunun beklenmesi sırasında hata: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - m4 komutunun beklenmesi sırasında hata: %v", err))
 		return "", fmt.Sprintf("m4 komutunun beklenmesi sırasında hata: %v", err)
 	}
 
 	if err := dpicCmd.Wait(); err != nil {
-		Log("Error", fmt.Sprintf("dpic komutunun beklenmesi sırasında hata: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - dpic komutunun beklenmesi sırasında hata: %v", err))
 		return "", fmt.Sprintf("dpic komutunun beklenmesi sırasında hata: %v", err)
 	}
-	Log("Info", fmt.Sprintf("Latex'e derleme işlemi başarıyla gerçekleşti: %v", m4))
+	LogWithDetails(fmt.Sprintf("Info - Latex'e derleme işlemi başarıyla gerçekleşti: %v", m4))
 	return outputFile, ""
 }
 
@@ -59,17 +59,17 @@ func toPDF(latex string) (bool, string) {
 	pdfCmd := exec.Command(conf.PdflatexPaths[conf.LastDistro], fmt.Sprintf(`-output-directory=%v`, conf.Workspace), fmt.Sprintf(`-aux-directory=%v`, conf.Workspace), "-interaction=nonstopmode", latex)
 
 	if err := pdfCmd.Start(); err != nil {
-		Log("Error", fmt.Sprintf("pdflatex komutunu başlatma hatası: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - pdflatex komutunu başlatma hatası: %v", err))
 		fmt.Println(err)
 		return false, fmt.Sprintf("pdflatex komutunu başlatma hatası: %v", err)
 	}
 	if err := pdfCmd.Wait(); err != nil {
 		fmt.Println(err)
-		Log("Error", fmt.Sprintf("pdflatex komutunun beklenmesi sırasında hata: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - pdflatex komutunun beklenmesi sırasında hata: %v", err))
 		return false, fmt.Sprintf("pdflatex komutunun beklenmesi sırasında hata: %v", err)
 	}
 
-	Log("Info", fmt.Sprintf("pdflatex ile başarıyla dosya derlendi, %v", latex))
+	LogWithDetails(fmt.Sprintf("Info - pdflatex ile başarıyla dosya derlendi, %v", latex))
 	return true, ""
 }
 

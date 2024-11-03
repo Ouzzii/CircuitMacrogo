@@ -3,7 +3,6 @@ package backend
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,18 +10,13 @@ import (
 	"github.com/ncruces/zenity"
 )
 
-// App struct
 type App struct {
 	ctx context.Context
 }
 
-// NewApp creates a new App application struct
 func NewApp() *App {
 	return &App{}
 }
-
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
 
 func (a *App) AskDirectory() string {
 	a.CheckWorkspace()
@@ -31,7 +25,7 @@ func (a *App) AskDirectory() string {
 		zenity.Directory(),
 	)
 	if err != nil {
-		log.Fatal(err)
+		LogWithDetails(err.Error())
 	}
 	conf := ReadConf()
 	conf.Workspace = strings.ReplaceAll(dir, "\\", "/")
@@ -40,15 +34,14 @@ func (a *App) AskDirectory() string {
 }
 
 func (a *App) GetDirectory(path string) []string {
-	Log("Info", "GetDirectory fonskiyonu çalıştı")
+	LogWithDetails("Info - GetDirectory fonskiyonu çalıştı")
 	var files []string
-	root := path // Klasörün yolunu buraya gir
+	root := path
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		// Dosya veya klasörün yolunu slice'a ekle
 		files = append(files, strings.ReplaceAll(path, "\\", "/"))
 		return nil
 	})
@@ -78,7 +71,7 @@ func (a *App) CheckWorkspace() string {
 	conf := ReadConf()
 	exist, err := exists(conf.Workspace)
 	if err != nil {
-		Log("Error", fmt.Sprint("Error checking workspace: %v", err))
+		LogWithDetails(fmt.Sprint("Error - Error checking workspace: %v", err))
 		return ""
 	}
 	if !exist {

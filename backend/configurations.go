@@ -30,13 +30,13 @@ func (c *Conf) WriteConf() {
 	}
 	jsonData, err := json.MarshalIndent(c, "", "  ") // Güzel bir format için MarshalIndent kullanıyoruz
 	if err != nil {
-		Log("Error", fmt.Sprintf("JSON formatına çevirme hatası: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - JSON formatına çevirme hatası: %v", err))
 	}
 
 	// JSON verisini bir dosyaya yaz
 	err = ioutil.WriteFile("configuration.json", jsonData, os.ModePerm)
 	if err != nil {
-		Log("Error", fmt.Sprintf("Dosya yazma hatası: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - Dosya yazma hatası: %v", err))
 	}
 }
 func (c *Conf) AddPdflatexPath(key, path string) {

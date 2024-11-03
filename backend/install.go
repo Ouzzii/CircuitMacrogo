@@ -32,10 +32,10 @@ func UpdateEnv() {
 
 	err := os.Setenv("PATH", updatedPath)
 	if err != nil {
-		Log("Error", fmt.Sprintf("PATH ayarlanamadı: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - PATH ayarlanamadı: %v", err))
 		return
 	}
-	Log("Success", fmt.Sprintf("Güncellenmiş PATH: %v", os.Getenv("PATH")))
+	LogWithDetails(fmt.Sprintf("Success - Güncellenmiş PATH: %v", os.Getenv("PATH")))
 }
 
 func InstallCM() {
@@ -43,22 +43,22 @@ func InstallCM() {
 	if !Exists(CMEditorPath) {
 		err := os.MkdirAll(CMEditorPath, 0755)
 		if err != nil {
-			Log("Error", fmt.Sprintf("Klasör oluşturulamadı: %v", err))
+			LogWithDetails(fmt.Sprintf("Error - Klasör oluşturulamadı: %v", err))
 			return
 		}
 		if err := Download(CMEditorPath+"/Circuit_macros.zip", "https://gitlab.com/aplevich/circuit_macros/-/archive/master/circuit_macros-master.zip"); err != nil {
-			Log("Error", fmt.Sprintf("İndirilirken hata ile karşılaşıldı: %v", err))
+			LogWithDetails(fmt.Sprintf("Error - İndirilirken hata ile karşılaşıldı: %v", err))
 		}
 
 		zipFile := CMEditorPath + "/Circuit_macros.zip"
 		outputDir := CMEditorPath + "/Circuit_macros"
 		err = Unzip(zipFile, outputDir)
 		if err != nil {
-			Log("Error", fmt.Sprintf("Dosya çıkartılamadı: %v", err))
+			LogWithDetails(fmt.Sprintf("Error - Dosya çıkartılamadı: %v", err))
 			return
 		}
 		os.Remove(CMEditorPath + "/Circuit_macros.zip")
-		Log("Info", fmt.Sprintf("Dosya başarıyla çıkartıldı: %v", outputDir))
+		LogWithDetails(fmt.Sprintf("Info - Dosya başarıyla çıkartıldı: %v", outputDir))
 
 	}
 

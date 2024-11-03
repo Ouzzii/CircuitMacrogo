@@ -3,18 +3,61 @@ package backend
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
+	Runtime "runtime"
 	"sort"
 	"strings"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+var logFile *os.File
+
+// Log setup fonksiyonu
+func SetupLogger() error {
+	var err error
+	logFile, err = os.OpenFile("logfile.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		return err
+	}
+
+	log.SetOutput(logFile)
+	//LogWithDetails("Log sistemi başlatıldı.")
+	return nil
+}
+
+// Log fonksiyonu
+func LogWithDetails(message string) {
+	_, file, line, ok := Runtime.Caller(1) // 1, bu fonksiyonu çağıran fonksiyonun konumunu alır
+	if ok {
+		// Sadece dosya adı ve satır numarasını alıyoruz
+		fileName := filepath.Base(file)                     // Dosya adını al
+		log.Printf("- %s:%d - %s", fileName, line, message) // Log formatını ayarlıyoruz
+	} else {
+		LogWithDetails(message)
+	}
+}
+
+// Cleanup fonksiyonu
+func Cleanup() {
+	if logFile != nil {
+		logFile.Close()
+		LogWithDetails("Log sistemi kapatıldı.")
+	}
+}
+
 func (a *App) Startup(ctx context.Context) {
-	fmt.Println("App started!")
+	err := SetupLogger()
+	if err != nil {
+		fmt.Println("Log dosyası oluşturulamadı:", err)
+		return
+	}
 
+	LogWithDetails("Startup")
 	runtime.EventsOn(ctx, "RunCheckDirectory", func(data ...interface{}) {
+
 		if dirInfo, ok := data[0].(map[string]interface{}); ok {
 			files := dirInfo["files"].([]interface{})
 			directories := dirInfo["directories"].([]interface{})
@@ -27,26 +70,6 @@ func (a *App) Startup(ctx context.Context) {
 		}
 
 	})
-
-	/*runtime.EventsOn(ctx, "CheckDirectoryOnChange", func(data ...interface{}) {
-		fmt.Println("CheckDirectoryOnChange received from frontend:", data)
-
-		// Burada gerekli işlemleri yapabilirsiniz
-		// Örneğin, belirli bir dizindeki dosya ve klasörleri kontrol etme
-	})
-
-	// Frontend'den gelen dosya ve dizinleri kontrol et
-	runtime.EventsOn(ctx, "VerifyDirectories", func(data ...interface{}) {
-		if dirInfo, ok := data[0].(map[string]interface{}); ok {
-			files := dirInfo["files"].([]interface{})
-			directories := dirInfo["directories"].([]interface{})
-
-			// Dosya ve klasör kontrolü
-			result := checkFilesAndDirectories(files, directories)
-			// Sonucu frontend'e gönder
-			runtime.EventsEmit(ctx, "DirectoryCheckResult", result)
-		}
-	})*/
 
 	a.ctx = ctx
 }
@@ -58,7 +81,6 @@ func checkFilesAndDirectories(files []interface{}, directories []interface{}) bo
 	localFiles := make([]string, 0)
 	localDirectories := make([]string, 0)
 
-	// Yerel dosyaları ve dizinleri oku
 	err := filepath.Walk(localDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -72,7 +94,7 @@ func checkFilesAndDirectories(files []interface{}, directories []interface{}) bo
 	})
 
 	if err != nil {
-		fmt.Println("Error walking the path:", err)
+		LogWithDetails(fmt.Sprintf("Error walking the path: %v", err.Error()))
 		return false
 	}
 
