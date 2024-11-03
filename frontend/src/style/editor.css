@@ -63,3 +63,12 @@
     margin: 0px;
 }
 
+.filetab div{
+    padding-left: 10px;
+}
+
+.closeButton{
+    height: 20px;
+    padding: 0px 10px;
+}
+
