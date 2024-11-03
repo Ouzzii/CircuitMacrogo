@@ -6,6 +6,10 @@
 .directory{
     transition: height 2s;
 }
+.directoryName, .file{
+    cursor: pointer;
+    margin-top: 5px;
+}
 
 .directoryName::before{
     content: '↑ ';
