@@ -40,9 +40,9 @@ function createTab(path){
         dir: path
     })
 
-    var closeButton = jQuery('<button>', {
+    var closeButton = jQuery('<img>', {
         class: 'closeButton',
-        text: 'Close'
+        src: 'https://cdn-icons-png.flaticon.com/512/9068/9068699.png'
     })
 
     var Types = {
