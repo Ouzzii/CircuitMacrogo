@@ -6,7 +6,7 @@ toolchain go1.23.1
 
 require (
 	github.com/ncruces/zenity v0.10.14
-	github.com/wailsapp/wails/v2 v2.9.1
+	github.com/wailsapp/wails/v2 v2.9.2
 )
 
 require (
