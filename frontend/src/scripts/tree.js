@@ -1,5 +1,5 @@
 import { Detect_tex_distros,AskDirectory, GetDirectory, IsFile, CheckWorkspace, CloseConfWorkspace } from '../../wailsjs/go/backend/App';
-
+import { EventsEmit } from '../../wailsjs/runtime/runtime';
 
 window.loadWorkspace = loadWorkspace
 window.CheckWorkspace = CheckWorkspace
@@ -35,6 +35,38 @@ function loadWorkspace(result) {
         }
     });
     $(".askdirectory").css('display', 'none');
+    if (window.DirectoryCheckInterval) {
+        clearInterval(window.DirectoryCheckInterval);
+    }
+
+    window.DirectoryCheckInterval = setTimeout(function() {
+        RunDirectoryCheck();
+        
+        // İlk 5 saniyelik kontrol sonrası her 2 saniyede bir çalıştırmak için yeni interval başlat
+        window.DirectoryCheckInterval = setInterval(function() {
+            RunDirectoryCheck();
+        }, 2000); // 2 saniye
+
+    }, 5000); // İlk 5 saniye
+}
+
+function RunDirectoryCheck(){
+        var files = [];
+        var dirs = [];
+        
+        $(".file").each(function() {
+            files.push($(this).attr("dir"));
+        });
+        
+        $(".directoryName").each(function() {
+            dirs.push($(this).attr("dir"));
+        });
+        
+        files.sort();
+        dirs.sort();
+        
+        EventsEmit("RunCheckDirectory", { files: files, directories: dirs });
+    
 }
 
 async function replaceFiles(file, rootDir) {
@@ -58,20 +90,16 @@ async function replaceFiles(file, rootDir) {
 function createDirectory(dirName , parentDir, rootDir){
     if ($(`div[dir='${dirName}']`).length == 0){
         const name = dirName.split('/')[dirName.split('/').length-1]
-        //console.log(dirName, parentDir, rootDir)
         var directory = jQuery('<div>',{
             dir: dirName,
             class: 'directory Closed'
-
         })
-        var directoryText = jQuery('<div>',{
+        var directoryText = jQuery('<a>',{
             dir: dirName,
             class: 'directoryName'
         })
-
         directoryText.css('padding-left', '10px')
         directory.css('padding-left', '10px')
-        //directory.text(sname)
         directoryText.text(name)
         $(`div[dir='${parentDir}']`).append(directoryText)
         $(`div[dir='${parentDir}']`).append(directory)
@@ -118,6 +146,9 @@ function CloseWorkspace(){
     ToggleWorkspace()
     $(".askdirectory").css('display', 'flex')
     CloseConfWorkspace()
+    clearTimeout(window.DirectoryCheckInterval)
+    clearInterval(window.DirectoryCheckInterval)
+    window.DirectoryCheckInterval = null
 }
 
 
