@@ -10,7 +10,7 @@ import './style/distroSelection.css';
 
 import { Detect_tex_distros, Boxdims_is_installed, ChooseDistro } from '../wailsjs/go/backend/App';
 import { backend } from '../wailsjs/go/models';
-import { EventsOn, EventsEmit } from '../wailsjs/runtime/runtime';
+import { EventsOn } from '../wailsjs/runtime/runtime';
 
 
 
@@ -33,23 +33,7 @@ EventsOn("DirectoryCheckResult", (data) => {
     }
 });
 
-setInterval(function() {
-    var files = [];
-    var dirs = [];
-    
-    $(".file").each(function() {
-        files.push($(this).attr("dir"));
-    });
-    
-    $(".directoryName").each(function() {
-        dirs.push($(this).attr("dir"));
-    });
-    
-    files.sort();
-    dirs.sort();
-    
-    EventsEmit("RunCheckDirectory", { files: files, directories: dirs });
-}, 1000);
+
 
 
 
@@ -90,9 +74,11 @@ function Init() {
                 distroSelect(boxdims, configuration)
             })
         }else{
-            Boxdims_is_installed()
-            loading.remove()
-            generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda daha önceden ${configuration['last-distro']} seçildiğinden tekrardan bu dosya yolundaki dağıtım seçilmiştir`)
+            Boxdims_is_installed().then(function (boxdims){
+                loading.remove()
+                generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda daha önceden ${configuration['last-distro']} seçildiğinden tekrardan bu dosya yolundaki dağıtım seçilmiştir`)
+            })
+
 
         }
         
