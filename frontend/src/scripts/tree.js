@@ -1,12 +1,16 @@
 import { Detect_tex_distros,AskDirectory, GetDirectory, IsFile, CheckWorkspace, CloseConfWorkspace } from '../../wailsjs/go/backend/App';
 
 
+window.loadWorkspace = loadWorkspace
+window.CheckWorkspace = CheckWorkspace
+
 function checkInit(){
 
     CheckWorkspace().then(function(workspace){
         console.log(workspace)
         if (workspace != ""){
             loadWorkspace(workspace)
+            ToggleWorkspace()
         }
 
     })
@@ -15,57 +19,52 @@ checkInit()
 $("body").on("click", "#pickFolder", function(){
             AskDirectory().then(function(result){
                 loadWorkspace(result)
+                ToggleWorkspace()
             })
 })
 
 
-function loadWorkspace(result){
-    let workspaceName = result.split("\\")[result.split("\\").length-1]
-    workspaceName = workspaceName.split("/")[workspaceName.split("/").length-1]
-    $(".workspace .workspaceName").html(workspaceName)
-    $(".filesfolders").attr("dir", result)
-    GetDirectory(result).then(function(files){
-        files.forEach(function(item){
-            replaceFiles(item, result)
-        })
-    })
-    $(".askdirectory").css('display', 'none') 
-    ToggleWorkspace()
+function loadWorkspace(result) {
+    let workspaceName = result.split("\\")[result.split("\\").length - 1];
+    workspaceName = workspaceName.split("/")[workspaceName.split("/").length - 1];
+    $(".workspace .workspaceName").html(workspaceName);
+    $(".filesfolders").attr("dir", result);
+    GetDirectory(result).then(async function (files) {
+        for (const item of files) {
+            await replaceFiles(item, result);
+        }
+    });
+    $(".askdirectory").css('display', 'none');
 }
 
-function replaceFiles(file, rootDir){
-    IsFile(file).then(function(filetype){
-        const parentDir = file.split(file.split("/")[file.split("/").length-2])[0]+file.split("/")[file.split("/").length-2]
-    //console.log(file.split(rootDir)[1], filetype)
-    if (!filetype){
+async function replaceFiles(file, rootDir) {
+    const filetype = await IsFile(file);
+    const parentDir = file.split(file.split("/")[file.split("/").length - 2])[0] + file.split("/")[file.split("/").length - 2];
 
-        createDirectory(file,  parentDir, rootDir)
-    }else{
-
-        var directory = jQuery('<div>',{
+    if (!filetype) {
+        createDirectory(file, parentDir, rootDir);
+    } else {
+        var directory = jQuery('<div>', {
             dir: file,
             class: 'file',
-        })
-        directory.css('padding-left', '10px')
-        directory.text(file.split('/')[file.split('/').length-1])
-        $(`div[dir='${parentDir}']`).append(directory)
+        });
+        directory.css('padding-left', '10px');
+        directory.text(file.split('/')[file.split('/').length - 1]);
+        $(`div[dir='${parentDir}']`).append(directory);
     }
-    
-
-    })
-
 }
+
 
 function createDirectory(dirName , parentDir, rootDir){
     if ($(`div[dir='${dirName}']`).length == 0){
         const name = dirName.split('/')[dirName.split('/').length-1]
-        console.log(dirName, parentDir, rootDir)
+        //console.log(dirName, parentDir, rootDir)
         var directory = jQuery('<div>',{
             dir: dirName,
             class: 'directory Closed'
 
         })
-        var directoryText = jQuery('<a>',{
+        var directoryText = jQuery('<div>',{
             dir: dirName,
             class: 'directoryName'
         })
