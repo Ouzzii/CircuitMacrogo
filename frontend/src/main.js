@@ -10,10 +10,51 @@ import './style/distroSelection.css';
 
 import { Detect_tex_distros, Boxdims_is_installed, ChooseDistro } from '../wailsjs/go/backend/App';
 import { backend } from '../wailsjs/go/models';
+import { EventsOn, EventsEmit } from '../wailsjs/runtime/runtime';
+
+
+
+
+EventsOn("DirectoryCheckResult", (data) => {
+    if (!data){
+        console.log("replacing")
+        $('.filesfolders div,.filesfolders a').each(function(item){
+            if ($(this).attr('class') != 'askdirectory'){
+                $(this).remove()
+            }
+        })
+        window.CheckWorkspace().then(function(workspace){
+            if (workspace != ""){
+                loadWorkspace(workspace)
+                
+            }
+    
+        })
+    }
+});
+
+setInterval(function() {
+    var files = [];
+    var dirs = [];
+    
+    $(".file").each(function() {
+        files.push($(this).attr("dir"));
+    });
+    
+    $(".directoryName").each(function() {
+        dirs.push($(this).attr("dir"));
+    });
+    
+    files.sort();
+    dirs.sort();
+    
+    EventsEmit("RunCheckDirectory", { files: files, directories: dirs });
+}, 1000);
 
 
 
 function Init() {
+
     console.log('creating loading div')
     var loading = jQuery('<div>', {
         class: 'loading',
