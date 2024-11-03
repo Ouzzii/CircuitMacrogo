@@ -32,7 +32,7 @@ function createTab(path){
         class: 'filetab',
         
     })
-    var editorTitle = jQuery('<a>', {
+    var editorTitle = jQuery('<div>', {
         text: path.split('/')[path.split('/').length-1]
     })
     var editorTextArea = jQuery('<textarea>', {
