@@ -1,6 +1,6 @@
 const notificationItems = [];
 
-class SoundManager {
+/*class SoundManager {
     constructor() {
         this.audioIn = new Audio('https://dsp-studio.ro/slide-sound.wav');
         this.audioOut = new Audio('https://dsp-studio.ro/fast-swipe.mp3');
@@ -20,9 +20,9 @@ class SoundManager {
         audio.currentTime = 0;
         audio.play().catch((err) => console.error('Audio playback failed:', err));
     }
-}
+}*/
 
-const audioManager = new SoundManager();
+//const audioManager = new SoundManager();
 
 function generateNotification(type,title,message) {
     const alerts = [
@@ -52,7 +52,7 @@ function generateNotification(type,title,message) {
     
     notification.id = Math.random().toString(36).substr(2, 9);
     notificationItems.push(notification);
-    audioManager.playOpenSound();
+    //audioManager.playOpenSound();
     displayNotification(notification);
 }
 
