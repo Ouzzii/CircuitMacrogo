@@ -13,6 +13,11 @@ import (
 func UpdateEnv() {
 	// Yeni eklemek istediğiniz path
 	cmPath := os.Getenv("HOME") + "/CMEditor/Circuit_macros"
+	if runtime.GOOS == "linux" {
+		cmPath = os.Getenv("HOME") + "/CMEditor/Circuit_macros"
+	} else if runtime.GOOS == "windows" {
+		cmPath = os.Getenv("USERPROFILE") + "\\CMEditor\\circuit_macros-master"
+	}
 	if !Exists(cmPath) {
 		InstallCM()
 		if runtime.GOOS == "windows" {
@@ -39,26 +44,32 @@ func UpdateEnv() {
 }
 
 func InstallCM() {
-	CMEditorPath := fmt.Sprintf("%v/CMEditor", os.Getenv("HOME"))
+	var CMEditorPath string
+	if runtime.GOOS == "linux" {
+		CMEditorPath = fmt.Sprintf("%v/CMEditor", os.Getenv("HOME"))
+	} else if runtime.GOOS == "windows" {
+		CMEditorPath = fmt.Sprintf("%v/CMEditor", os.Getenv("USERPROFILE"))
+	}
+
 	if !Exists(CMEditorPath) {
 		err := os.MkdirAll(CMEditorPath, 0755)
 		if err != nil {
-			LogWithDetails(fmt.Sprintf("Error - Klasör oluşturulamadı: %v", err))
+			//Log("Error", fmt.Sprintf("Klasör oluşturulamadı: %v", err))
 			return
 		}
 		if err := Download(CMEditorPath+"/Circuit_macros.zip", "https://gitlab.com/aplevich/circuit_macros/-/archive/master/circuit_macros-master.zip"); err != nil {
-			LogWithDetails(fmt.Sprintf("Error - İndirilirken hata ile karşılaşıldı: %v", err))
+			//Log("Error", fmt.Sprintf("İndirilirken hata ile karşılaşıldı: %v", err))
 		}
 
 		zipFile := CMEditorPath + "/Circuit_macros.zip"
-		outputDir := CMEditorPath + "/Circuit_macros"
+		outputDir := CMEditorPath
 		err = Unzip(zipFile, outputDir)
 		if err != nil {
-			LogWithDetails(fmt.Sprintf("Error - Dosya çıkartılamadı: %v", err))
+			//Log("Error", fmt.Sprintf("Dosya çıkartılamadı: %v", err))
 			return
 		}
 		os.Remove(CMEditorPath + "/Circuit_macros.zip")
-		LogWithDetails(fmt.Sprintf("Info - Dosya başarıyla çıkartıldı: %v", outputDir))
+		//Log("Info", fmt.Sprintf("Dosya başarıyla çıkartıldı: %v", outputDir))
 
 	}
 

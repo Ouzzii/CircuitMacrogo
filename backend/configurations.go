@@ -40,9 +40,9 @@ func (c *Conf) WriteConf() {
 	}
 }
 func (c *Conf) AddPdflatexPath(key, path string) {
-	//if c.PdflatexPaths == nil {
-	//	c.PdflatexPaths = make(map[string]string)
-	//}
+	if c.PdflatexPaths == nil {
+		c.PdflatexPaths = make(map[string]string)
+	}
 	c.PdflatexPaths[key] = path
 }
 
