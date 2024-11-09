@@ -84,10 +84,10 @@ func (a *App) Detect_tex_distros() Conf {
 
 func (a *App) Boxdims_is_installed() Boxdims {
 	UpdateEnv()
-	conf := ReadConf()
+
 	boxdims := Boxdims{}
 	if runtime.GOOS == "linux" {
-		if _, exists := conf.PdflatexPaths["miktex"]; exists {
+		if _, exists := a.configuration.PdflatexPaths["miktex"]; exists {
 			miktexpath := filepath.Join(os.Getenv("HOME"), ".miktex", "texmfs", "install", "tex", "latex", "circuit_macros")
 			if !Exists(miktexpath) {
 				if CheckInternet() {
@@ -108,7 +108,7 @@ func (a *App) Boxdims_is_installed() Boxdims {
 		} else {
 			//Log("Warning", "miktex: cihazda miktex bulunmamaktadır")
 		}
-		if _, exists := conf.PdflatexPaths["texlive"]; exists {
+		if _, exists := a.configuration.PdflatexPaths["texlive"]; exists {
 			texlivepathCmd := exec.Command("sh", "-c", `find / -wholename "*/texmf-dist/tex/latex" 2>&1 | grep -v "Permission denied" | grep -v "Invalid argument" | grep -v "No such file or directory"`)
 			output, _ := texlivepathCmd.CombinedOutput()
 			texlivePath := strings.Trim(string(output), "\n")
@@ -149,7 +149,7 @@ func (a *App) Boxdims_is_installed() Boxdims {
 		}
 
 	} else if runtime.GOOS == "windows" {
-		if _, exists := conf.PdflatexPaths["miktex"]; exists {
+		if _, exists := a.configuration.PdflatexPaths["miktex"]; exists {
 			miktexpath := filepath.Join(os.Getenv("LOCALAPPDATA"), "Programs", "MiKTeX", "tex", "latex", "circuit_macros")
 			if !Exists(miktexpath) {
 				if CheckInternet() {
@@ -169,7 +169,7 @@ func (a *App) Boxdims_is_installed() Boxdims {
 		} else {
 			//Log("Warning", "miktex: cihazda miktex bulunmamaktadır")
 		}
-		if _, exists := conf.PdflatexPaths["texlive"]; exists {
+		if _, exists := a.configuration.PdflatexPaths["texlive"]; exists {
 			texlivepathCmd := exec.Command("cmd", "/C", "dir", "C:\\texlive\\texmf-dist", "/s")
 			output, _ := texlivepathCmd.CombinedOutput()
 			texlivepath := filepath.Join(strings.TrimSpace(strings.Split(strings.Split(string(output), " Directory of ")[1], "\n")[0]), "texmf-dist", "tex", "latex")
@@ -206,7 +206,7 @@ func (a *App) Boxdims_is_installed() Boxdims {
 			}
 		}
 	}
-
+	a.configuration.WriteConf()
 	return boxdims
 }
 
@@ -233,9 +233,8 @@ func get_initexmf() string {
 }
 
 func (a *App) ChooseDistro(distro string) {
-	conf := ReadConf()
 
-	conf.LastDistro = distro
-	conf.WriteConf()
+	a.configuration.LastDistro = distro
+	a.configuration.WriteConf()
 
 }

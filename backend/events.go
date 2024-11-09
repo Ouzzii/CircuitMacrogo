@@ -66,7 +66,7 @@ func (a *App) Startup(ctx context.Context) {
 			directories := dirInfo["directories"].([]interface{})
 
 			// Dosya ve klasör kontrolü
-			result := checkFilesAndDirectories(files, directories)
+			result := a.checkFilesAndDirectories(files, directories)
 
 			// Sonucu frontend'e gönder
 			runtime.EventsEmit(ctx, "DirectoryCheckResult", result)
@@ -77,9 +77,9 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func checkFilesAndDirectories(files []interface{}, directories []interface{}) bool {
-	conf := ReadConf()
-	localDir := conf.Workspace
+func (a *App) checkFilesAndDirectories(files []interface{}, directories []interface{}) bool {
+
+	localDir := a.configuration.Workspace
 
 	localFiles := make([]string, 0)
 	localDirectories := make([]string, 0)

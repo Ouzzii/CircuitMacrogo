@@ -28,9 +28,9 @@ func (a *App) AskDirectory() string {
 	if err != nil {
 		LogWithDetails(err.Error())
 	}
-	conf := ReadConf()
-	conf.Workspace = strings.ReplaceAll(dir, "\\", "/")
-	conf.WriteConf()
+
+	a.configuration.Workspace = strings.ReplaceAll(dir, "\\", "/")
+	a.configuration.WriteConf()
 
 	return strings.ReplaceAll(dir, "\\", "/")
 }
@@ -70,25 +70,24 @@ func (a *App) IsFile(path string) bool {
 }
 
 func (a *App) CheckWorkspace() string {
-	conf := ReadConf()
-	exist, err := exists(conf.Workspace)
+
+	exist, err := exists(a.configuration.Workspace)
 	if err != nil {
 		LogWithDetails(fmt.Sprint("Error - Error checking workspace: %v", err))
 		return ""
 	}
 	if !exist {
-		conf.Workspace = ""
-		conf.WriteConf()
+		a.configuration.Workspace = ""
+		a.configuration.WriteConf()
 	}
-	return conf.Workspace
+	return a.configuration.Workspace
 }
 func (a *App) CloseConfWorkspace() {
-	conf := ReadConf()
 
-	fmt.Println(conf.Workspace)
-	conf.Workspace = ""
-	conf.WriteConf()
-	fmt.Println(conf.Workspace)
+	//fmt.Println(a.configuration.Workspace)
+	a.configuration.Workspace = ""
+	a.configuration.WriteConf()
+	//fmt.Println(a.configuration.Workspace)
 }
 
 func exists(path string) (bool, error) {

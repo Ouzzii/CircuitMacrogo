@@ -67,9 +67,9 @@ func tolatex(m4 string) (string, string) {
 	return outputFile, ""
 }
 
-func toPDF(latex string) (bool, string) {
-	conf := ReadConf()
-	pdfCmd := exec.Command(conf.PdflatexPaths[conf.LastDistro], fmt.Sprintf(`-output-directory=%v`, conf.Workspace), fmt.Sprintf(`-aux-directory=%v`, conf.Workspace), "-interaction=nonstopmode", latex)
+func (a *App) toPDF(latex string) (bool, string) {
+
+	pdfCmd := exec.Command(a.configuration.PdflatexPaths[a.configuration.LastDistro], fmt.Sprintf(`-output-directory=%v`, a.configuration.Workspace), fmt.Sprintf(`-aux-directory=%v`, a.configuration.Workspace), "-interaction=nonstopmode", latex)
 
 	if err := pdfCmd.Start(); err != nil {
 		LogWithDetails(fmt.Sprintf("Error - pdflatex komutunu başlatma hatası: %v", err))
@@ -101,7 +101,7 @@ func (a *App) Compile(target, path string) string {
 			return err
 		}
 
-		_, err = toPDF(tltx)
+		_, err = a.toPDF(tltx)
 		return err
 	}
 	return ""
