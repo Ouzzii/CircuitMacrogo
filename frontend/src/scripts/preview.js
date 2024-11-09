@@ -128,3 +128,20 @@ function previewPdf(path){ // canvas oluşturulduktan sonra içerisine pdf veris
     })
 
 }
+
+
+function RefreshAllPreviews(paths){
+
+
+    for (let path of paths) {
+
+        closeTab($(`.previewtab[dir="${path.getAttribute("dir")}"] button`))
+        createpreviewTab(path.getAttribute("dir"))
+        previewPdf(path.getAttribute("dir"))
+    }
+
+
+}
+
+
+window.RefreshAllPreviews = RefreshAllPreviews
