@@ -11,7 +11,8 @@ import (
 )
 
 type App struct {
-	ctx context.Context
+	ctx           context.Context
+	configuration Conf
 }
 
 func NewApp() *App {
@@ -30,6 +31,7 @@ func (a *App) AskDirectory() string {
 	conf := ReadConf()
 	conf.Workspace = strings.ReplaceAll(dir, "\\", "/")
 	conf.WriteConf()
+
 	return strings.ReplaceAll(dir, "\\", "/")
 }
 
@@ -82,8 +84,11 @@ func (a *App) CheckWorkspace() string {
 }
 func (a *App) CloseConfWorkspace() {
 	conf := ReadConf()
+
+	fmt.Println(conf.Workspace)
 	conf.Workspace = ""
 	conf.WriteConf()
+	fmt.Println(conf.Workspace)
 }
 
 func exists(path string) (bool, error) {
