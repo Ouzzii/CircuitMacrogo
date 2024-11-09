@@ -27,6 +27,7 @@ $("body").on("click", "#pickFolder", function(){
 function loadWorkspace(result) {
     let workspaceName = result.split("\\")[result.split("\\").length - 1];
     workspaceName = workspaceName.split("/")[workspaceName.split("/").length - 1];
+    console.log(workspaceName)
     $(".workspace .workspaceName").html(workspaceName);
     $(".filesfolders").attr("dir", result);
     GetDirectory(result).then(async function (files) {
@@ -41,13 +42,12 @@ function loadWorkspace(result) {
 
     window.DirectoryCheckInterval = setTimeout(function() {
         RunDirectoryCheck();
-        
-        // İlk 5 saniyelik kontrol sonrası her 2 saniyede bir çalıştırmak için yeni interval başlat
+
         window.DirectoryCheckInterval = setInterval(function() {
             RunDirectoryCheck();
-        }, 2000); // 2 saniye
+        }, 2000);
 
-    }, 5000); // İlk 5 saniye
+    }, 5000);
 }
 
 function RunDirectoryCheck(){
@@ -127,7 +127,6 @@ function ToggleWorkspace(){
     }else{
         $('.workspace').css('visibility', 'visible');
     }
-
 }
 
 
