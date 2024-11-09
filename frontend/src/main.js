@@ -17,7 +17,7 @@ import { EventsOn } from '../wailsjs/runtime/runtime';
 
 EventsOn("DirectoryCheckResult", (data) => {
     if (!data){
-        console.log("replacing")
+        
         $('.filesfolders div,.filesfolders a').each(function(item){
             if ($(this).attr('class') != 'askdirectory'){
                 $(this).remove()
@@ -39,7 +39,6 @@ EventsOn("DirectoryCheckResult", (data) => {
 
 function Init() {
 
-    console.log('creating loading div')
     var loading = jQuery('<div>', {
         class: 'loading',
     })
@@ -65,8 +64,6 @@ function Init() {
     loading.append(loadingSpinner)
     $('body').append(loading)
 
-
-
     Detect_tex_distros().then(function (configuration) {
         if (configuration['last-distro'] == "") {
             Boxdims_is_installed().then(function (boxdims) {
@@ -78,21 +75,13 @@ function Init() {
                 loading.remove()
                 generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda daha önceden ${configuration['last-distro']} seçildiğinden tekrardan bu dosya yolundaki dağıtım seçilmiştir`)
             })
-
-
         }
-        
     })
-
-
-
 }
 
 function distroSelect(boxdims, config) {
     var distroSelectPopup = jQuery('<div/>', {
         id: 'distroSelectPopup',
-
-
 
     }).css({
         'height': '200px',
@@ -109,8 +98,6 @@ function distroSelect(boxdims, config) {
         class: 'distroSelectQuestion',
         text: 'Cihazınızda aşağıdaki dağıtımlar bulundu, devam etmek için birini seçmelisiniz.'
     })
-
-
 
 
     if (Object.keys(config.pdflatexPaths).length > 1) {
