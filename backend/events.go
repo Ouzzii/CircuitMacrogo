@@ -49,6 +49,9 @@ func Cleanup() {
 }
 
 func (a *App) Startup(ctx context.Context) {
+
+	a.configuration = ReadConf()
+
 	err := SetupLogger()
 	if err != nil {
 		fmt.Println("Log dosyası oluşturulamadı:", err)
@@ -105,6 +108,7 @@ func checkFilesAndDirectories(files []interface{}, directories []interface{}) bo
 	// Kontrol
 	filesMatch := compareSlices(files, localFiles)
 	dirsMatch := compareSlices(directories, localDirectories)
+	fmt.Println(filesMatch, dirsMatch, "events")
 	return (filesMatch && dirsMatch)
 }
 
