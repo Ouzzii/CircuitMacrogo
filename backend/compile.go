@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -13,12 +14,24 @@ func tolatex(m4 string) (string, string) {
 	pgfFile := "pgf.m4"
 	m4Input := m4
 	outputFile := strings.Replace(m4, filepath.Ext(m4), ".tex", 1)
+	//var m4Cmd, dpicCmd *exec.Cmd
+	//m4Cmd = exec.Command("m4", pgfFile, m4Input)
+	//dpicCmd = exec.Command("dpic", "-g")
 
-	m4Cmd := exec.Command("m4", pgfFile, m4Input)
+	// dpicCmd.Stdin, _ = m4Cmd.StdoutPipe()
+	var m4Cmd, dpicCmd *exec.Cmd
+	if runtime.GOOS == "linux" {
+		m4Cmd = exec.Command("m4", pgfFile, m4Input)
+		dpicCmd = exec.Command("dpic", "-g")
 
-	dpicCmd := exec.Command("dpic", "-g")
+		dpicCmd.Stdin, _ = m4Cmd.StdoutPipe()
+	} else if runtime.GOOS == "windows" {
+		m4Cmd = exec.Command("cmd", "/C", "chdir", os.Getenv("USERPROFILE")+"\\CMEditor\\circuit_macros-master", "&&", "m4", pgfFile, m4Input)
+		fmt.Println("cmd", "/C", "chdir", os.Getenv("USERPROFILE")+"\\CMEditor\\Circuit_macros", "&&", "m4", pgfFile, m4Input)
+		dpicCmd = exec.Command("cmd", "/C", "chdir", os.Getenv("USERPROFILE")+"\\CMEditor\\circuit_macros-master", "&&", "dpic.exe", "-g")
 
-	dpicCmd.Stdin, _ = m4Cmd.StdoutPipe()
+		dpicCmd.Stdin, _ = m4Cmd.StdoutPipe()
+	}
 
 	// dpic komutunun çıktısını dosyaya yönlendiriyoruz
 	output, err := os.Create(outputFile)
@@ -46,10 +59,10 @@ func tolatex(m4 string) (string, string) {
 		return "", fmt.Sprintf("m4 komutunun beklenmesi sırasında hata: %v", err)
 	}
 
-	if err := dpicCmd.Wait(); err != nil {
-		LogWithDetails(fmt.Sprintf("Error - dpic komutunun beklenmesi sırasında hata: %v", err))
-		return "", fmt.Sprintf("dpic komutunun beklenmesi sırasında hata: %v", err)
-	}
+	//if err := dpicCmd.Wait(); err != nil {
+	//	LogWithDetails(fmt.Sprintf("Error - dpic komutunun beklenmesi sırasında hata: %v", err))
+	//	return "", fmt.Sprintf("dpic komutunun beklenmesi sırasında hata: %v", err)
+	//}
 	LogWithDetails(fmt.Sprintf("Info - Latex'e derleme işlemi başarıyla gerçekleşti: %v", m4))
 	return outputFile, ""
 }
