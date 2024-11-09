@@ -10,7 +10,6 @@ import (
 )
 
 func (a *App) Detect_tex_distros() Conf {
-	var conf Conf
 	//last distro check
 
 	if runtime.GOOS == "linux" {
@@ -19,11 +18,10 @@ func (a *App) Detect_tex_distros() Conf {
 		output, err := detectPdfCmd.CombinedOutput()
 		if err != nil {
 			//Log("Error", fmt.Sprintf("miktex - detect pdflatex komutunu başlatma hatası: %v", err))
-			return conf
+			return a.configuration
 		}
-		conf = ReadConf()
-		conf.AddPdflatexPath("miktex", strings.Replace(string(output), "\n", "", 1))
-		conf.WriteConf()
+		a.configuration.AddPdflatexPath("miktex", strings.Replace(string(output), "\n", "", 1))
+		a.configuration.WriteConf()
 
 		//pdflatex
 		detectPdfCmd = exec.Command("sh", "-c", "which pdflatex")
@@ -31,7 +29,7 @@ func (a *App) Detect_tex_distros() Conf {
 		output, err = detectPdfCmd.CombinedOutput()
 		if err != nil {
 			//Log("Error", fmt.Sprintf("texlive - detect pdflatex komutunu başlatma hatası: %v", err))
-			return conf
+			return a.configuration
 		}
 
 		for _, pdflatexpath := range strings.Split(string(output), "\n") {
@@ -40,17 +38,18 @@ func (a *App) Detect_tex_distros() Conf {
 				output, err = pdflatexDistroCmd.CombinedOutput()
 				if err != nil {
 					//Log("Error", fmt.Sprintf("pdflatex versiyonu kontrol edilirken hata ile karşılaşıldı: %v\n", err))
-					return conf
+					return a.configuration
 				}
 				if strings.Contains(string(output), "TeX Live") {
-					conf.AddPdflatexPath("texlive", pdflatexpath)
+					a.configuration.AddPdflatexPath("texlive", pdflatexpath)
 				}
 			}
 		}
-		conf.WriteConf()
+		a.configuration.WriteConf()
 
 	} else if runtime.GOOS == "windows" {
-		fmt.Println("abcjdbjkfds")
+
+		fmt.Println("abcjdbjkfds", a.configuration.Workspace)
 		detectPdfCmd := exec.Command("where", "pdflatex")
 		output, err := detectPdfCmd.CombinedOutput()
 		for _, pdflatexpath := range strings.Split(string(output), "\n") {
@@ -62,22 +61,24 @@ func (a *App) Detect_tex_distros() Conf {
 			pdflatexCmd := exec.Command(pdflatexpath, "--version")
 			output, err = pdflatexCmd.CombinedOutput()
 			if err != nil {
-				//Log("Error", fmt.Sprintf("%v - detect pdflatex komutunu başlatma hatası: %v", pdflatexpath, err))
+				LogWithDetails("Error - " + fmt.Sprintf("%v - detect pdflatex komutunu başlatma hatası: %v", pdflatexpath, err))
 			}
 			if strings.Contains(string(output), "TeX Live") {
-				conf.AddPdflatexPath("texlive", pdflatexpath)
+				a.configuration.AddPdflatexPath("texlive", pdflatexpath)
 			} else if strings.Contains(string(output), "MiKTeX") {
-				conf.AddPdflatexPath("miktex", pdflatexpath)
+				a.configuration.AddPdflatexPath("miktex", pdflatexpath)
 			}
-			conf.WriteConf()
+			a.configuration.WriteConf()
 
 		}
 		if err != nil {
-			//Log("Error", fmt.Sprintf("miktex - detect pdflatex komutunu başlatma hatası: %v", err))
-			return conf
+			LogWithDetails("Error - " + fmt.Sprintf("miktex - detect pdflatex komutunu başlatma hatası: %v", err))
+			return a.configuration
 		}
 	}
-	return conf
+	fmt.Println("abcjdbjkfds", ReadConf().Workspace)
+	fmt.Println("abcjdbjkfds", a.configuration.Workspace)
+	return a.configuration
 
 }
 
