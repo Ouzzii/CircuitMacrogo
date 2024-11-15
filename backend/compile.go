@@ -10,15 +10,9 @@ import (
 )
 
 func tolatex(m4 string) (string, string) {
-	// Girdi dosyaları
 	pgfFile := "pgf.m4"
 	m4Input := m4
 	outputFile := strings.Replace(m4, filepath.Ext(m4), ".tex", 1)
-	//var m4Cmd, dpicCmd *exec.Cmd
-	//m4Cmd = exec.Command("m4", pgfFile, m4Input)
-	//dpicCmd = exec.Command("dpic", "-g")
-
-	// dpicCmd.Stdin, _ = m4Cmd.StdoutPipe()
 	var m4Cmd, dpicCmd *exec.Cmd
 	if runtime.GOOS == "linux" {
 		m4Cmd = exec.Command("m4", pgfFile, m4Input)

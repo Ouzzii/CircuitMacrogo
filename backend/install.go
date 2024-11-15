@@ -54,22 +54,22 @@ func InstallCM() {
 	if !Exists(CMEditorPath) {
 		err := os.MkdirAll(CMEditorPath, 0755)
 		if err != nil {
-			//Log("Error", fmt.Sprintf("Klasör oluşturulamadı: %v", err))
+			LogWithDetails("Error", fmt.Sprintf("Klasör oluşturulamadı: %v", err))
 			return
 		}
 		if err := Download(CMEditorPath+"/Circuit_macros.zip", "https://gitlab.com/aplevich/circuit_macros/-/archive/master/circuit_macros-master.zip"); err != nil {
-			//Log("Error", fmt.Sprintf("İndirilirken hata ile karşılaşıldı: %v", err))
+			LogWithDetails("Error", fmt.Sprintf("İndirilirken hata ile karşılaşıldı: %v", err))
 		}
 
 		zipFile := CMEditorPath + "/Circuit_macros.zip"
 		outputDir := CMEditorPath
 		err = Unzip(zipFile, outputDir)
 		if err != nil {
-			//Log("Error", fmt.Sprintf("Dosya çıkartılamadı: %v", err))
+			LogWithDetails("Error", fmt.Sprintf("Dosya çıkartılamadı: %v", err))
 			return
 		}
 		os.Remove(CMEditorPath + "/Circuit_macros.zip")
-		//Log("Info", fmt.Sprintf("Dosya başarıyla çıkartıldı: %v", outputDir))
+		LogWithDetails("Info", fmt.Sprintf("Dosya başarıyla çıkartıldı: %v", outputDir))
 
 	}
 

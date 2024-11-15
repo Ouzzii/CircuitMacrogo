@@ -73,7 +73,7 @@ func (a *App) CheckWorkspace() string {
 
 	exist, err := exists(a.configuration.Workspace)
 	if err != nil {
-		LogWithDetails(fmt.Sprint("Error - Error checking workspace: %v", err))
+		LogWithDetails(fmt.Sprintf("Error - Error checking workspace: %v", err))
 		return ""
 	}
 	if !exist {
@@ -83,11 +83,8 @@ func (a *App) CheckWorkspace() string {
 	return a.configuration.Workspace
 }
 func (a *App) CloseConfWorkspace() {
-
-	//fmt.Println(a.configuration.Workspace)
 	a.configuration.Workspace = ""
 	a.configuration.WriteConf()
-	//fmt.Println(a.configuration.Workspace)
 }
 
 func exists(path string) (bool, error) {
