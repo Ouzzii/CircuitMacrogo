@@ -1,9 +1,14 @@
 import { GetPDF } from "../../wailsjs/go/backend/App"
 
+const zoomLevels = {};
+
 $('body').on('click','.file', function(){ // dosya .pdf ile bitiyorsa preview olarak aç
     if ($(this).text().endsWith('.pdf') && $(`.previewtab[dir="${$(this).attr('dir')}"]`).length == 0){
+        console.log($(this).attr('dir'))
         createpreviewTab($(this).attr('dir'))
         previewPdf($(this).attr('dir'))
+        createPDFButtons($(this).attr('dir'))
+        updateZoomLevelDisplay()
     }
 })
 
@@ -12,6 +17,7 @@ $('body').on('click', '.previewtab', function(){ // tablar arası geçiş
     $('.previewtab#active').removeAttr('id')
     $(this).attr('id', 'active')
     changeCanvas()
+    updateZoomLevelDisplay()
 })
 
 function changeCanvas(){ // tablar arasında geçiş yapılırken canvasları gizler/ortaya çıkarır
@@ -79,14 +85,17 @@ function createpreviewTab(path){ // Bir dosyaya tıklandığında o dosyaya uygu
         dir: path
     })
 
-    var closeButton = jQuery('<button>', {
+    var closeButton = jQuery('<img>', {
         class: 'closeButton',
-        text: 'Close'
+        src: 'https://cdn-icons-png.flaticon.com/512/9068/9068699.png'
     })
     if ($('.previewtab').length == 0) {
         previewTab.attr('id', 'active')
         editorTextArea.attr('id', 'active')
     }
+
+
+
 
     previewTab.append(editorTitle)
     previewTab.append(closeButton)
@@ -97,16 +106,20 @@ function createpreviewTab(path){ // Bir dosyaya tıklandığında o dosyaya uygu
 
 function previewPdf(path){ // canvas oluşturulduktan sonra içerisine pdf verisini işler
 
-    GetPDF(path).then(function(base64Data){
+    zoomLevels[path] = 1.0; // Varsayılan zoom seviyesi
+    renderPdfPage(path, zoomLevels[path]);
+
+}
+function renderPdfPage(path, scale) {
+    GetPDF(path).then(function(base64Data) {
         if (base64Data) {
             const pdfData = atob(base64Data); // Base64'ten binary'ye çevir
 
             // PDF.js ile PDF verisini yükleyin
-            const loadingTask = pdfjsLib.getDocument({data: pdfData});
+            const loadingTask = pdfjsLib.getDocument({ data: pdfData });
             loadingTask.promise.then(function(pdf) {
-                console.log('PDF Yüklendi, Toplam Sayfa Sayısı: ' + pdf.numPages);
                 pdf.getPage(1).then(function(page) {
-                    const viewport = page.getViewport({ scale: 1.5 });
+                    const viewport = page.getViewport({ scale: scale });
                     const canvas = $(`canvas[dir="${path}"]`)[0];
                     const ctx = canvas.getContext('2d');
 
@@ -115,7 +128,7 @@ function previewPdf(path){ // canvas oluşturulduktan sonra içerisine pdf veris
 
                     const renderContext = {
                         canvasContext: ctx,
-                        viewport: viewport
+                        viewport: viewport,
                     };
                     page.render(renderContext);
                 });
@@ -125,7 +138,37 @@ function previewPdf(path){ // canvas oluşturulduktan sonra içerisine pdf veris
         } else {
             console.error("PDF verisi alınamadı");
         }
+    });
+}
+
+
+
+function createPDFButtons(path){
+    var zoomOutButton = jQuery('<button>',{
+        text: '+',
+        class: 'zoomOut',
+        path: path
     })
+
+    var zoomLevel = jQuery('<a>', {
+        text: '',
+        class: 'zoom-level'
+    })
+
+    var zoomInButton = jQuery('<button>', {
+        text: '-',
+        class: 'zoomIn',
+        path: path
+    })
+    if ($('.zoomOut').length == 0){
+    $('.previewSettings').append(zoomInButton)
+
+    $('.previewSettings').append(zoomLevel)
+    $('.previewSettings').append(zoomOutButton)
+}
+
+
+
 
 }
 
@@ -142,6 +185,28 @@ function RefreshAllPreviews(paths){
 
 
 }
+
+$('body').on('click', '.zoomOut', function() {
+    const path = $('.previewtab#active').attr('dir'); // Hangi PDF için zoom yapıldığını al
+    zoomLevels[path] = (zoomLevels[path] || 1.0) + 0.1; // Zoom seviyesini artır
+    console.log(zoomLevels)
+    renderPdfPage(path, zoomLevels[path]);
+    updateZoomLevelDisplay()
+});
+
+$('body').on('click', '.zoomIn', function() {
+    const path = $('.previewtab#active').attr('dir'); // Hangi PDF için zoom yapıldığını al
+    zoomLevels[path] = Math.max((zoomLevels[path] || 1.0) - 0.1, 0.5); // Zoom seviyesini azalt, 0.5'ten küçük olmasın
+    renderPdfPage(path, zoomLevels[path]);
+    updateZoomLevelDisplay()
+});
+
+function updateZoomLevelDisplay() {
+    const zoomLevel = zoomLevels[$('.previewtab#active').attr('dir')] || 1.0; // Varsayılan zoom seviyesi 1.0
+    const percentage = Math.round(zoomLevel * 100); // Yüzdeye çevir
+    $(`.zoom-level`).text(`${percentage}%`); // İlgili span'a yazdır
+}
+
 
 
 window.RefreshAllPreviews = RefreshAllPreviews
