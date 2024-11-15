@@ -28,3 +28,7 @@
 .pdf-render#active{
     display: block !important;
 }
+
+.previewCanvas{
+    overflow: auto  ;
+}
