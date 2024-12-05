@@ -73,7 +73,7 @@ function Init() {
         }else{
             Boxdims_is_installed().then(function (boxdims){
                 loading.remove()
-                generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda daha önceden ${configuration['last-distro']} seçildiğinden tekrardan bu dosya yolundaki dağıtım seçilmiştir`)
+                //generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda daha önceden ${configuration['last-distro']} seçildiğinden tekrardan bu dosya yolundaki dağıtım seçilmiştir`)
             })
         }
     })
@@ -119,9 +119,9 @@ function distroSelect(boxdims, config) {
             if (boxdims[key] == "exist") {
                 console.log(key, config.pdflatexPaths[key]);
                 ChooseDistro(key).then(function(){})
-                generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda yalnızca tek bir dağıtım bulunduğundan otomatik olarak ${key} seçilmiştir`)
+                //generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda yalnızca tek bir dağıtım bulunduğundan otomatik olarak ${key} seçilmiştir`)
             } else {
-                generateNotification('error', 'Tex dağıtımı hatası', `Cihazınızda ${key} tespit edildi fakat ${key} içerisinde boxdims kütüphanesi bulunmadığından herhangi bir tex dağıtımı seçilememektedir.`)
+                //generateNotification('error', 'Tex dağıtımı hatası', `Cihazınızda ${key} tespit edildi fakat ${key} içerisinde boxdims kütüphanesi bulunmadığından herhangi bir tex dağıtımı seçilememektedir.`)
 
             }
         });
@@ -134,7 +134,7 @@ function distroSelect(boxdims, config) {
 $('body').on('click', '.dexist', function(){
     const key = $(this).text().split(",")[0]
     ChooseDistro(key).then(function(){})
-    generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda yalnızca tek bir dağıtım bulunduğundan otomatik olarak ${key} seçilmiştir`)
+    //generateNotification('success', 'Tex dağıtımı seçildi', `Cihazınızda yalnızca tek bir dağıtım bulunduğundan otomatik olarak ${key} seçilmiştir`)
     $('#distroSelectPopup').remove()
 })
 

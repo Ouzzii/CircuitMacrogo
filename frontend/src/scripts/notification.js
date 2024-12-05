@@ -53,13 +53,14 @@ function generateNotification(type,title,message) {
     notification.id = Math.random().toString(36).substr(2, 9);
     notificationItems.push(notification);
     //audioManager.playOpenSound();
+    
     displayNotification(notification);
 }
 
 function generateNotifications() {
     for (let index = 0; index < 4; index++) {
         setTimeout(() => {
-            generateNotification();
+            //generateNotification();
         }, 500 * index);
     }
 }
@@ -87,14 +88,15 @@ function displayNotification(notification) {
 
     notificationsContainer.appendChild(notificationDiv);
 
-    setTimeout(() => {
+    setTimeout(function() {
         notificationDiv.classList.remove('show');
-        setTimeout(() => removeNotification(notification.id), 500);
+        setTimeout(function(){removeNotification(notification.id)}, 500);
     }, 5000);
 }
 
 function removeNotification(id) {
     const index = notificationItems.findIndex(item => item.id === id);
+    console.log(notificationItems)
     if (index !== -1) {
         notificationItems.splice(index, 1);
         const notificationDiv = document.getElementById(id);
@@ -105,5 +107,5 @@ function removeNotification(id) {
     }
 }
 
-window.generateNotification = generateNotification;
+window.generateNotification = //generateNotification;
 window.removeNotification = removeNotification;

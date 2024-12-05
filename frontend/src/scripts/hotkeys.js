@@ -11,7 +11,7 @@ document.addEventListener('keydown', function(event){
         const content = $('.editTextArea#active').val()
         SaveContent(path, content).then(function(result){
             if (result == true){
-                generateNotification("success", "Dosya Kaydedildi", `Dosya başarıyla kaydedildi.\nKaydedilen Dosya: ${path}`)
+                //generateNotification("success", "Dosya Kaydedildi", `Dosya başarıyla kaydedildi.\nKaydedilen Dosya: ${path}`)
             }
 
         })
