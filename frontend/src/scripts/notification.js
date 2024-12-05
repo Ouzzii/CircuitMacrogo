@@ -101,7 +101,7 @@ function removeNotification(id) {
         notificationItems.splice(index, 1);
         const notificationDiv = document.getElementById(id);
         if (notificationDiv) {
-            //audioManager.playCloseSound();
+            audioManager.playCloseSound();
             notificationDiv.remove();
         }
     }
