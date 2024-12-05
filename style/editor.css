@@ -1,0 +1,74 @@
+.editortabs{
+    display: flex;
+}
+
+.filetab{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    background-color: #f1f1f1;
+}
+
+.filetab:hover{
+    background-color: #ddd;
+}
+
+.filetab a{
+    color: black;
+    user-select: none;
+    padding: 0px 10px;
+}
+.filetab#active{
+    background-color: #ccc;
+}
+
+
+.editTextArea{
+    display: none;
+}
+.editTextArea#active{
+    display: block !important;
+}
+
+.filetettings, .compile{
+    display: none;
+}
+.filesettings#active, .compile#active{
+    display: flex !important;
+}
+
+.fileOperations{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 50px;
+}
+.compile{
+    align-items: center;
+}
+.compileButton{
+    height: 30px;
+}
+.compilewith, .compileas{
+    height: 30px;
+    border: none;
+    border-radius: 0px;
+    background-color: transparent;
+    outline: none;
+    user-select: none;
+}
+.willcheck{
+    height: 30px;
+    width: 30px;
+    margin: 0px;
+}
+
+.filetab div{
+    padding-left: 10px;
+}
+
+.closeButton{
+    height: 20px;
+    padding: 0px 10px;
+}
+

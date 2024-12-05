@@ -1,0 +1,34 @@
+.previewtabs{
+    display: flex;
+}
+
+.previewtab{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    background-color: #f1f1f1;
+}
+
+.previewtab:hover{
+    background-color: #ddd;
+}
+
+.previewtab a{
+    color: black;
+    user-select: none;
+    padding: 0px 10px;
+}
+.previewtab#active{
+    background-color: #ccc;
+}
+.pdf-render{
+    display: none;
+}
+.pdf-render#active{
+    display: block !important;
+}
+
+.previewCanvas{
+    overflow: auto  ;
+}

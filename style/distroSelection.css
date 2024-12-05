@@ -1,0 +1,15 @@
+.selectionArea{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.dexist {
+    cursor: pointer;
+}
+
+
+.dnotexist{
+    cursor: not-allowed;
+}

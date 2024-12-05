@@ -1,0 +1,99 @@
+@keyframes CloseFolder {
+    0%   { height: 100%; }
+    100% { height: 0px; }
+}
+
+.directory{
+    display: flex;
+    flex-direction: column;
+    transition: height 2s;
+}
+.directoryName, .file{
+    text-wrap: nowrap;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.directoryName:hover, .file:hover{
+    background: #3c4c63;
+}
+
+
+.directoryName::before{
+    content: '↑ ';
+}
+.directoryName.Downarrow::before{
+    content: '↓ ';
+}
+
+
+.Closed {
+    height: 0px;
+    overflow: hidden;
+}
+.filesfolders{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.workspace{
+    visibility: hidden;
+    display: grid;
+    grid-template-columns: 1fr 50px;
+}
+
+.workspaceName{
+    text-align: left;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.workspaceButtons img{
+    height: 20px;
+    width: 20px;
+}
+.workspaceButtons, .settings{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+.workspaceButtons div, .settings div{
+    display: flex;
+    padding: 5px;
+}
+.settings img{
+    cursor: not-allowed;
+    height: 30px;
+    width: 30px;
+}
+
+
+.scrollable-div {
+    width: 100%;
+    overflow-x: scroll; /* Yatay kaydırmayı etkinleştir */
+    white-space: nowrap; /* İçeriğin taşmasını sağlar */
+  }
+  
+  .scrollable-div::-webkit-scrollbar {
+    height: var(--scrollbar-height); /* Yatay kaydırma çubuğu yüksekliği */
+  }
+  
+  .scrollable-div::-webkit-scrollbar-track {
+    background: #1e1e24;
+  }
+  
+  .scrollable-div::-webkit-scrollbar-thumb {
+    background: -webkit-radial-gradient(
+      circle,
+      #b9a8fd 0%,
+      #fd1d83 50%,
+      #fcc545 100%
+    );
+    border-radius: 10px;
+  }
+
+  .closeWorkspace{
+    cursor: pointer;
+  }
