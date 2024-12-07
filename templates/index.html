@@ -85,39 +85,14 @@
       });
   </script>
   
-    <script src="./src/main.js" type="module"></script>
-    <!--<script src="./src/scripts/notification.js" type="module"></script>-->
-    <script src="./src/scripts/tree.js" type="module"></script>
-    <script src="./src/scripts/editor.js" type="module"></script>
-    <script src="./src/scripts/hotkeys.js" type="module"></script>
-    <script src="./src/scripts/preview.js" type="module"></script>
-    <script src="./src/scripts/compile.js" type="module"></script>
-
-    <script>
-        let socket = new WebSocket("ws://localhost:8080/ws");
-
-        const button = document.querySelector("button#pickFolder")
-
-        button.addEventListener("click", function(){
-
-            socket.send("askdirectory")
-            socket.send("checkdirectory")
-
-        })
-
-        socket.onmessage = function(event) {
-            let output = document.getElementById("output");
-            console.log(event.data )
-        };
-
-
-        1
-        function sendMessage() {
-            const message = "Merhaba WebSocket!";
-            socket.send(JSON.stringify(message));
-        }
-        sendMessage()
-    </script>
+   <!-- <script src="/scripts/main.js" type="module"></script>
+    <script src="./scripts/notification.js" type="module"></script>
+    <script src="/scripts/tree.js" type="module"></script>
+    <script src="/scripts/editor.js" type="module"></script>
+    <script src="/scripts/hotkeys.js" type="module"></script>
+    <script src="/scripts/preview.js" type="module"></script>
+    <script src="/scripts/compile.js" type="module"></script>-->
+    <script src="/scripts/wtree.js"></script>
 
 </body>
 </html>
