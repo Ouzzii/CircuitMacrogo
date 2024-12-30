@@ -35,14 +35,18 @@ func main() {
 	http.HandleFunc("/GetDirectory", app.GetDirectory)
 	http.HandleFunc("/IsFile", app.IsFile)
 	http.HandleFunc("/RunDirectoryCheck", app.RunCheckDirectory)
+	http.HandleFunc("/CloseWorkspace", app.CloseConfWorkspace)
+
+	http.HandleFunc("/GetContent", app.GetContent)
+	http.HandleFunc("/SaveContent", app.SaveContent)
 
 	// Ana sayfa handler
-	http.HandleFunc("/", h1)
+	http.HandleFunc("/", HomePage)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func h1(w http.ResponseWriter, r *http.Request) {
+func HomePage(w http.ResponseWriter, r *http.Request) {
 	temPlate := template.Must(template.ParseFiles("./templates/index.html"))
 	temPlate.Execute(w, nil)
 }
