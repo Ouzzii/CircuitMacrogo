@@ -88,7 +88,7 @@ func (a *App) IsFile(w http.ResponseWriter, r *http.Request) {
 		response = true
 	}
 
-	json.NewEncoder(w).Encode(response)
+	err = json.NewEncoder(w).Encode(response)
 	if err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
@@ -109,7 +109,7 @@ func (a *App) CheckWorkspace(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(a.Configuration.Workspace)
 
 }
-func (a *App) CloseConfWorkspace() {
+func (a *App) CloseConfWorkspace(w http.ResponseWriter, r *http.Request) {
 	a.Configuration.Workspace = ""
 	a.Configuration.WriteConf()
 }
