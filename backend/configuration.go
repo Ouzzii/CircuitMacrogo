@@ -10,7 +10,13 @@ import (
 )
 
 func ReadConf() Conf {
-	plan, _ := ioutil.ReadFile("configuration.json")
+	plan, err := ioutil.ReadFile("configuration.json")
+	if err != nil {
+		if os.IsNotExist(err) {
+			ioutil.WriteFile("configuration.json", []byte("{}"), os.ModePerm)
+			return Conf{}
+		}
+	}
 	var data Conf
 	if err := json.Unmarshal(plan, &data); err != nil {
 		LogWithDetails(fmt.Sprintf("Veriyi çözümlerken hata oluştu: %v", err))
