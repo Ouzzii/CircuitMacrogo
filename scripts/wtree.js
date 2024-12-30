@@ -186,7 +186,7 @@ function CloseWorkspace(){
 
     ToggleWorkspace()
     $(".askdirectory").css('display', 'flex')
-    CloseConfWorkspace()
+    fetch("/CloseWorkspace")
     clearTimeout(window.DirectoryCheckInterval)
     clearInterval(window.DirectoryCheckInterval)
     window.DirectoryCheckInterval = null
