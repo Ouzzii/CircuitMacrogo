@@ -15,6 +15,10 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+func init() {
+	backend.UpdateEnv()
+}
+
 func main() {
 	// Statik dosyaları serve et
 
@@ -39,6 +43,14 @@ func main() {
 
 	http.HandleFunc("/GetContent", app.GetContent)
 	http.HandleFunc("/SaveContent", app.SaveContent)
+
+	http.HandleFunc("/GetPDF", app.GetPDF)
+
+	http.HandleFunc("/DetectTexDistros", app.Detect_tex_distros)
+	http.HandleFunc("/BoxdimsIsInstalled", app.Boxdims_is_installed)
+	http.HandleFunc("/ChooseDistro", app.ChooseDistro)
+
+	http.HandleFunc("/Compile", app.Compile)
 
 	// Ana sayfa handler
 	http.HandleFunc("/", HomePage)
