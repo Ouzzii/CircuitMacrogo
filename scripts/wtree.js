@@ -2,7 +2,6 @@ const CheckSocket = new WebSocket("ws://localhost:8080/RunDirectoryCheck");
 
 
 CheckSocket.addEventListener("message", (event) => {
-
     if (event.data == "false"){
         $('.filesfolders div,.filesfolders a').each(function(item){
             if ($(this).attr('class') != 'askdirectory'){
@@ -17,13 +16,11 @@ CheckSocket.addEventListener("message", (event) => {
                 loadWorkspace(workspace)
             }
           })
-
     }
 });
 
 
 function checkInit(){
-
     fetch("/CheckWorkspace").then(response => response.json()).then(workspace => {
         if (workspace != ""){
             loadWorkspace(workspace)
@@ -36,7 +33,6 @@ function checkInit(){
 checkInit()
 
 $("body").on("click", "#pickFolder", function(){
-
     fetch("/AskDirectory").then(async function(workspace){
         res = await workspace.json()
         loadWorkspace(res)
@@ -117,15 +113,7 @@ function RunDirectoryCheck(){
 }
 
 async function replaceFiles(file, rootDir, filetype) {
-    //const filetype = await IsFile(file);
-    /*const response = await (await fetch("/IsFile", {method: 'POST', body: JSON.stringify(file)}))
-    console.log("Raw Response:", response);
-    const filetype = await response.json()
-    console.log(filetype)*/
-
-
     const parentDir = file.split(file.split("/")[file.split("/").length - 2])[0] + file.split("/")[file.split("/").length - 2];
-
     if (!filetype) {
         createDirectory(file, parentDir, rootDir);
     } else {
@@ -138,6 +126,7 @@ async function replaceFiles(file, rootDir, filetype) {
         $(`div[dir='${parentDir}']`).append(directory);
     }
 }
+
 function createDirectory(dirName , parentDir, rootDir){
     if ($(`div[dir='${dirName}']`).length == 0){
         const name = dirName.split('/')[dirName.split('/').length-1]

@@ -20,7 +20,7 @@ document.addEventListener('keydown', function(event){
         }).then(response => response.text()).then(response=>{
             if (response == "ok"){
                 console.log("Kaydedildi")
-                //generateNotification("success", "Dosya Kaydedildi", `Dosya başarıyla kaydedildi.\nKaydedilen Dosya: ${path}`)
+                generateNotification("success", "Dosya Kaydedildi", `Dosya başarıyla kaydedildi.\nKaydedilen Dosya: ${path}`)
             }
         })
     }
