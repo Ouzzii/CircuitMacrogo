@@ -3,6 +3,8 @@
 $('body').on('click','.file', function(){
     if (!$(this).text().endsWith('.pdf')){
         createTab($(this).attr('dir'))
+        changeEditor()
+        
     }
     
     checkScrollbarHeight()
@@ -17,10 +19,14 @@ $('body').on('click', '.filetab', function(){
 function changeEditor(){
     const activeTabPath = $('.filetab#active').attr('dir')
     $('.editTextArea#active').removeAttr('id')
+    $('.filesettings#active').removeAttr('id')
+    $('.compile#active').removeAttr('id')
     $(`.editTextArea[dir="${activeTabPath}"]`).attr('id', 'active')
-
-    $('#active.compile').removeAttr('id')
+    $(`.filesettings[dir="${activeTabPath}"]`).attr('id', 'active')
     $(`.compile[dir="${activeTabPath}"]`).attr('id', 'active')
+
+    //$('#active.compile').removeAttr('id')
+    //$(`.compile[dir="${activeTabPath}"]`).attr('id', 'active')
 
 }
 
@@ -75,12 +81,32 @@ function createTab(path){
     const filesettings = $('<div/>', {class: 'filesettings', dir: path})
     const compilediv = $('<div/>', {class: 'compile', dir: path})
     
+    if ($('.filetab').length > 0){
+        $('.filesettings').removeAttr("id")
+        $('.compile').removeAttr("id")
+    }
+
+
+
+    $('.filetab').removeAttr('id')
+
+    editorTab.attr('id', 'active')
+    editorTextArea.attr('id', 'active')
+    filesettings.attr('id', 'active')
+    compilediv.attr('id', 'active')
+
+    /*
     if ($('.filetab').length == 0) {
         editorTab.attr('id', 'active')
         editorTextArea.attr('id', 'active')
         filesettings.attr('id', 'active')
         compilediv.attr('id', 'active')
+    }else{
+        $('.filesettings').attr('id', '')
+        $('.compile').attr('id', '')
     }
+    */
+
 
     fetch("/GetContent?path=" + path)
     .then(response => response.text())
@@ -105,22 +131,22 @@ function createTab(path){
 
 }
 
-$('body').on('click', '.editortabs .closeButton', function(event){
+$('body').on('click', '.editortabs .filetab .closeButton', function(event){
     event.stopPropagation();
-    closeTab($(this))
+    console.log($(this))
+    closeEditorTab($(this))
 })
 
-function closeTab(button){
+function closeEditorTab(button){
+    
     const tab = button.parent()[0]
     const tabText = $(`textarea[dir="${$(tab).attr('dir')}"]`)
     const tabCompile = $(`.compile[dir="${$(tab).attr('dir')}"]`)
     const tabSettings = $(`.filesettings[dir="${$(tab).attr('dir')}"]`)
     if ($(tab).attr('id') == 'active'){
         var currentIndex = $('.editortabs div.filetab').toArray().indexOf(tab);
-
         const nextTab = $('.editortabs .filetab').eq(currentIndex + 1);
         const prevTab = $('.editortabs .filetab').eq(currentIndex - 1);
-        
         if (nextTab.length){
             nextTab.attr('id', 'active')
             $(`textarea[dir="${nextTab.attr('dir')}"]`).attr('id', 'active')

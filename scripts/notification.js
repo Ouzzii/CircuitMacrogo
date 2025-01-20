@@ -24,7 +24,7 @@ const notificationItems = [];
 
 //const audioManager = new SoundManager();
 
-function //generateNotification(type,title,message) {
+function generateNotification(type,title,message) {
     const alerts = [
         {
             type: 'error',
@@ -57,7 +57,7 @@ function //generateNotification(type,title,message) {
     displayNotification(notification);
 }
 
-function //generateNotifications() {
+function generateNotifications() {
     for (let index = 0; index < 4; index++) {
         setTimeout(() => {
             //generateNotification();
@@ -107,5 +107,5 @@ function removeNotification(id) {
     }
 }
 
-window.//generateNotification = //generateNotification;
+window.generateNotification = generateNotification;
 window.removeNotification = removeNotification;
