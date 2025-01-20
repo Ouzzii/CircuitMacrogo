@@ -37,7 +37,6 @@ func (a *App) SaveContent(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
-	fmt.Println(PostData)
 
 	err = os.WriteFile(PostData.Path, []byte(PostData.Content), 0777)
 	if err != nil {
