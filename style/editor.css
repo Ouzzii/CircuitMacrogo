@@ -31,7 +31,7 @@
     display: block !important;
 }
 
-.filetettings, .compile{
+.filesettings, .compile{
     display: none;
 }
 .filesettings#active, .compile#active{
